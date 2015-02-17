@@ -1,3 +1,7 @@
+var intGenerator = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -7,8 +11,8 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.speed = Math.random() * 350 + 50; // speed within range of [50, 400) px/s
-    this.x = 101;
-    this.y = 83;
+    this.x = -101;
+    this.y = intGenerator(0, 2) * 83 + 60; // random position
 };
 
 // Update the enemy's position, required method for game
