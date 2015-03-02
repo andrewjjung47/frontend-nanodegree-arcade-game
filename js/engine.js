@@ -14,6 +14,9 @@
  * a little simpler to work with.
  */
 
+// TODO: change the reference for character and enemies position coordinate and
+// bottom left of the image.
+
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -81,6 +84,19 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         // checkCollisions();
+    }
+
+    // TODO: finish checkCollisions
+
+    /* Check whether the character has collided with the enemy. Collision occurs
+    when an enemy and the character are on the same row and the enemy's right
+    coordinate passes the character's left coordinate.*/
+    function checkCollisions() {
+        // check if an enemy is in the same row as the character
+        allEnemies.forEach(function(enemy) {
+            var enemyRow = (enemy.y - 60) / 83;
+            var characterRow =
+        });
     }
 
     /* This is called by the update function  and loops through all of the
