@@ -11,9 +11,11 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.width = 95; // 3px blank on each sides of the image
     this.speed = Math.random() * 350 + 50; // speed within range of [50, 400) px/s
     this.x = -101;
-    this.y = intGenerator(0, 2) * 83 + 60; // random position
+    this.row = intGenerator(0, 2); // random position
+    this.y =  this.row * 83 + 60;
 };
 
 // Update the enemy's position, required method for game
@@ -23,6 +25,7 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += this.speed * dt;
+    this.left = this.x + 3;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -35,11 +38,14 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-boy.png';
+    this.width = 65; // 18px blank on each sides of the image
     this.x = 202;
     this.y = 402;
+    this.row = (this.y + 13) / 83;
 };
 
 Player.prototype.update = function() {
+    this.left = this.x + 18;
 };
 
 Player.prototype.render = function() {

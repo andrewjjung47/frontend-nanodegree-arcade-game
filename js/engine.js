@@ -93,10 +93,7 @@ var Engine = (function(global) {
     coordinate passes the character's left coordinate.*/
     function checkCollisions() {
         // check if an enemy is in the same row as the character
-        allEnemies.forEach(function(enemy) {
-            var enemyRow = (enemy.y - 60) / 83;
-            var characterRow =
-        });
+
     }
 
     /* This is called by the update function  and loops through all of the
