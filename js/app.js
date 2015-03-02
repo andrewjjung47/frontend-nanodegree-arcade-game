@@ -14,8 +14,8 @@ var Enemy = function() {
     this.width = 95; // 3px blank on each sides of the image
     this.speed = Math.random() * 350 + 50; // speed within range of [50, 400) px/s
     this.x = -101;
-    this.row = intGenerator(0, 2); // random position
-    this.y =  this.row * 83 + 60;
+    this.row = intGenerator(1, 3); // random position
+    this.y =  this.row * 83 - 23;
 };
 
 // Update the enemy's position, required method for game
@@ -25,7 +25,7 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += this.speed * dt;
-    this.left = this.x + 3;
+    this.left = this.x + 3; // furthest left pixel of the enemy bug
 };
 
 // Draw the enemy on the screen, required method for game
@@ -45,7 +45,8 @@ var Player = function() {
 };
 
 Player.prototype.update = function() {
-    this.left = this.x + 18;
+    this.row = (this.y + 13) / 83;
+    this.left = this.x + 18; // furthest left pixel of the player
 };
 
 Player.prototype.render = function() {
@@ -84,6 +85,14 @@ Player.prototype.handleInput = function(key) {
 
     this.render();
 };
+
+Player.prototype.reset = function() {
+    this.x = 202;
+    this.y = 402;
+};
+
+// TODOs: create multiple enemies. how many should be
+// created? when additional enemies should be created?
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies

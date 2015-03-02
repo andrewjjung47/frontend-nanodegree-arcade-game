@@ -83,17 +83,20 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
-    // TODO: finish checkCollisions
-
-    /* Check whether the character has collided with the enemy. Collision occurs
-    when an enemy and the character are on the same row and the enemy's right
-    coordinate passes the character's left coordinate.*/
+    /* Check whether the character has collided with the enemy. */
     function checkCollisions() {
         // check if an enemy is in the same row as the character
-
+        allEnemies.forEach(function(enemy) {
+            if (enemy.row === player.row) {
+                // check if the enemy overlaps with the player
+                if (enemy.left + enemy.width > player.left && enemy.left < player.left + player.width) {
+                    player.reset();
+                }
+            }
+        });
     }
 
     /* This is called by the update function  and loops through all of the
