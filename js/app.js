@@ -3,6 +3,8 @@ var intGenerator = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+var level = 4;
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -12,8 +14,8 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.width = 95; // 3px blank on each sides of the image
-    this.speed = Math.random() * 350 + 50; // speed within range of [50, 400) px/s
-    this.x = -101;
+    this.speed = Math.round(Math.random() * 350) + 50; // speed within range of [50, 400) px/s
+    this.x = Math.round(Math.random() * -level) * 100 -101; // prevent enemies to show up all at once
     this.row = intGenerator(1, 3); // random position
     this.y =  this.row * 83 - 23;
 };
@@ -98,7 +100,11 @@ Player.prototype.reset = function() {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
-allEnemies[0] = new Enemy();
+// Enemy number matches level
+for (var i = 0; i < level; i++)
+{
+    allEnemies[i] = new Enemy();
+}
 var player = new Player();
 
 
