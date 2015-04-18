@@ -68,6 +68,7 @@ var Engine = (function(global) {
      */
     function init() {
       render();
+      charSelect();
       /*
         reset();
         lastTime = Date.now();
@@ -154,7 +155,6 @@ var Engine = (function(global) {
             }
         }
 
-
         renderEntities();
     }
 
@@ -170,7 +170,66 @@ var Engine = (function(global) {
             enemy.render();
         });
 
-        player.render();
+        if (player !== null) player.render();
+    }
+
+    function charSelect() {
+      var character = 0;
+
+      var charImages = [
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
+      ];
+
+      renderChar();
+
+      document.addEventListener('keyup', function(e) {
+          var allowedKeys = {
+              37: 'left',
+              //38: 'up',
+              39: 'right',
+              //40: 'down',
+              13: 'enter'
+          };
+
+          var input = allowedKeys[e.keyCode];
+
+          if (input === 'left' && character > 0) {
+            character--;
+          }
+          else if (input === 'right' && character < charImages.length - 1) {
+            character++;
+          }
+          else if (input === 'enter') {
+            player = new Player(charImages[character]);
+          }
+
+          renderChar();
+      });
+
+      /**
+      * Render character selection canvas.
+      */
+      function renderChar() {
+        var ctx = charCanvas.ctx;
+
+        // clear previous drawings on the selection canvas
+        ctx.clearRect(0, 0, 505, 606);
+
+        // white opaque background
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fillRect(0, 0, 505, 606);
+
+        var selector = 'images/Selector.png';
+        ctx.drawImage(Resources.get(selector), character * 101, 151);
+
+        for (var i = 0; i < charImages.length; i++) {
+          ctx.drawImage(Resources.get(charImages[i]), i * 101, 151);
+        }
+      }
     }
 
     /* This function does nothing but it could have been a good place to
@@ -190,7 +249,12 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/Selector.png'
     ]);
     Resources.onReady(init);
 
