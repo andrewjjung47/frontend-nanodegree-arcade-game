@@ -27,10 +27,8 @@ var Engine = (function(global) {
         Utils = global.Utils,
         lastTime;
 
-    var mainCanvas = new Utils.Canvas('main', 505, 606),
-      charCanvas = new Utils.Canvas('char-select', 505, 606);
+    var mainCanvas = new Utils.Canvas('main', 505, 606);
     doc.body.appendChild(mainCanvas.canvas);
-    doc.body.appendChild(charCanvas.canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -69,10 +67,9 @@ var Engine = (function(global) {
     function init() {
       render();
       charSelect();
-      /*
-        reset();
-        lastTime = Date.now();
-        main();*/
+      reset();
+      lastTime = Date.now();
+      main();
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -173,7 +170,15 @@ var Engine = (function(global) {
         if (player !== null) player.render();
     }
 
+    /**
+     * Execute character selection by setting up selection canvas and add logic
+     */
     function charSelect() {
+      // Character selection canvas on top of the main canvas
+      var charCanvas = new Utils.Canvas('char-select', 505, 606);
+      doc.body.appendChild(charCanvas.canvas);
+
+      // Character index
       var character = 0;
 
       var charImages = [
@@ -184,9 +189,11 @@ var Engine = (function(global) {
         'images/char-princess-girl.png'
       ];
 
+      document.addEventListener('keyup', keyHandler);
       renderChar();
 
-      document.addEventListener('keyup', function(e) {
+      // Handler for keyup event for character seleciton.
+      function keyHandler(e) {
           var allowedKeys = {
               37: 'left',
               //38: 'up',
@@ -204,11 +211,14 @@ var Engine = (function(global) {
             character++;
           }
           else if (input === 'enter') {
+            document.removeEventListener('keyup', keyHandler);
+            document.getElementById('char-select').remove();
             player = new Player(charImages[character]);
+            return;
           }
 
           renderChar();
-      });
+      }
 
       /**
       * Render character selection canvas.
@@ -224,11 +234,16 @@ var Engine = (function(global) {
         ctx.fillRect(0, 0, 505, 606);
 
         var selector = 'images/Selector.png';
-        ctx.drawImage(Resources.get(selector), character * 101, 151);
+        ctx.drawImage(Resources.get(selector), character * 101, 101);
 
         for (var i = 0; i < charImages.length; i++) {
-          ctx.drawImage(Resources.get(charImages[i]), i * 101, 151);
+          ctx.drawImage(Resources.get(charImages[i]), i * 101, 101);
         }
+
+        ctx.fillStyle = '#1E7FE0';
+        ctx.font = '70px Permanent Marker, cursive';
+        ctx.textAlign = 'center';
+        ctx.fillText('Characters', 250, 120);
       }
     }
 
