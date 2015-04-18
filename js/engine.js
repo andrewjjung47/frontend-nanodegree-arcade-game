@@ -24,13 +24,13 @@ var Engine = (function(global) {
      */
     var doc = global.document,
         win = global.window,
-        canvas = doc.createElement('canvas'),
-        ctx = canvas.getContext('2d'),
+        Utils = global.Utils,
         lastTime;
 
-    canvas.width = 505;
-    canvas.height = 606;
-    doc.body.appendChild(canvas);
+    var mainCanvas = new Utils.Canvas('main', 505, 606),
+      charCanvas = new Utils.Canvas('char-select', 505, 606);
+    doc.body.appendChild(mainCanvas.canvas);
+    doc.body.appendChild(charCanvas.canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -67,9 +67,11 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
+      render();
+      /*
         reset();
         lastTime = Date.now();
-        main();
+        main();*/
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -196,5 +198,5 @@ var Engine = (function(global) {
      * object when run in a browser) so that developer's can use it more easily
      * from within their app.js files.
      */
-    global.ctx = ctx;
+    global.ctx = mainCanvas.ctx;
 })(this);
