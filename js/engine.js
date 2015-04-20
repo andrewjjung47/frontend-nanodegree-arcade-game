@@ -30,9 +30,15 @@ var Engine = (function(global) {
     var mainCanvas = new Utils.Canvas('main', 505, 606);
     doc.body.appendChild(mainCanvas.canvas);
 
+    /**
+     * Boolean to pause the game or not.
+     * @type {Boolean}
+     */
+    var pause = true;
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
+
     function main() {
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
@@ -43,11 +49,13 @@ var Engine = (function(global) {
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
-        /* Call our update/render functions, pass along the time delta to
+        if (!pause) {
+         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
-        render();
+          update(dt);
+        }
+          render();
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -65,11 +73,10 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-      render();
-      charSelect();
       reset();
       lastTime = Date.now();
       main();
+      charSelect();
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -214,6 +221,14 @@ var Engine = (function(global) {
             document.removeEventListener('keyup', keyHandler);
             document.getElementById('char-select').remove();
             player = new Player(charImages[character]);
+            pause = false;
+            // for test purpose
+            document.addEventListener('keyup', function(e) {
+              if (e.keyCode === 13) {
+                pause = !pause;
+                console.log(pause);
+              }
+            });
             return;
           }
 
