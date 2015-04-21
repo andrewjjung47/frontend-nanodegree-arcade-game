@@ -24,7 +24,7 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     if (this.x > 505) this.reset();
-    this.x += this.speed * dt;
+    this.x += Math.round(this.speed * dt); // avoid floating point coordinates for better performance.
     this.left = this.x + 3; // furthest left pixel of the enemy bug
 };
 
