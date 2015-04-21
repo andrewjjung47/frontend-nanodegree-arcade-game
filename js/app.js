@@ -1,8 +1,3 @@
-var intGenerator = function(min, max) {
-    /* Generates a random integer in between min and max, inclusive */
-    return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
 var level = 10;
 
 // Enemies our player must avoid
@@ -36,7 +31,7 @@ Enemy.prototype.render = function() {
 Enemy.prototype.reset = function() {
     this.speed = Math.round(Math.random() * 350) + 50; // speed within range of [50, 400) px/s
     this.x = Math.round(Math.random() * -level) * 100 -101; // prevent enemies to show up all at once
-    this.row = intGenerator(1, 3); // random position
+    this.row = window.Utils.intGenerator(1, 3); // random position
     this.y =  this.row * 83 - 23;
 };
 
@@ -100,17 +95,12 @@ Player.prototype.handleInput = function(key) {
             this.move('y', 83);
             break;
     }
-
-    this.render();
 };
 
 Player.prototype.reset = function() {
     this.x = 202;
     this.y = 402;
 };
-
-// TODOs: create multiple enemies. how many should be
-// created? when additional enemies should be created?
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies

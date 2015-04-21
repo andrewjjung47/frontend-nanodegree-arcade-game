@@ -35,10 +35,10 @@ var Engine = (function(global) {
      * @type {Boolean}
      */
     var pause = true;
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
-
     function main() {
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
@@ -54,8 +54,8 @@ var Engine = (function(global) {
          * our update function since it may be used for smooth animation.
          */
           update(dt);
-        }
           render();
+        }
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -133,7 +133,22 @@ var Engine = (function(global) {
         renderEntities();
     }
 
-    /**
+    /* This function is called by the render function and is called on each game
+     * tick. It's purpose is to then call the render functions you have defined
+     * on your enemy and player entities within app.js
+     */
+    function renderEntities() {
+        /* Loop through all of the objects within the allEnemies array and call
+         * the render function you have defined.
+         */
+        allEnemies.forEach(function(enemy) {
+            enemy.render();
+        });
+
+        if (player !== null) player.render();
+    }
+
+     /**
      * Render background on a separate canvas to avoid repeatedly redrawing it
      */
     function renderBackground() {
@@ -171,21 +186,6 @@ var Engine = (function(global) {
                 backgroundCanvas.ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-    }
-
-    /* This function is called by the render function and is called on each game
-     * tick. It's purpose is to then call the render functions you have defined
-     * on your enemy and player entities within app.js
-     */
-    function renderEntities() {
-        /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
-         */
-        allEnemies.forEach(function(enemy) {
-            enemy.render();
-        });
-
-        if (player !== null) player.render();
     }
 
     /**

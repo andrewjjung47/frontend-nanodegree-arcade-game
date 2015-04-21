@@ -15,4 +15,9 @@ window.Utils.Canvas = function(id, width, height) {
 
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
-  };
+};
+
+window.Utils.intGenerator = function(min, max) {
+    /* Generates a random integer in between min and max, inclusive */
+    return Math.floor(Math.random() * (max - min + 1) + min);
+};
