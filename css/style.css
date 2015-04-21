@@ -1,7 +1,7 @@
 body {
 }
 
-#main, #char-select {
+#main, #char-select, #back-ground {
   position: absolute;
   left: 0;
   right: 0;
@@ -12,4 +12,8 @@ body {
 
 #char-select {
   z-index: 1;
+}
+
+#back-ground {
+  z-index: -1;
 }
