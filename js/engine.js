@@ -267,7 +267,7 @@ var Engine = (function(global) {
         }
 
         ctx.fillStyle = '#1E7FE0';
-        ctx.font = '70px Permanent Marker, cursive';
+        ctx.font = '70px Courier New';
         ctx.textAlign = 'center';
         ctx.fillText('Characters', 250, 120);
       }
