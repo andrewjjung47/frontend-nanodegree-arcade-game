@@ -106,6 +106,22 @@ Player.prototype.handleInput = function(key) {
     }
 };
 
+/**
+ * Check whether the character has collided with an object. The object must have
+ * properties row, left and width.
+ * @return {boolean} true if the player has collided with the object
+ */
+Player.prototype.checkCollision = function(obj) {
+    // check if the object is in the same row as the character
+    if (obj.row === player.row) {
+      // check if the object overlaps with the player
+      if (obj.left + obj.width > player.left && obj.left < player.left + player.width) {
+        return true;
+      }
+    }
+    return false;
+};
+
 Player.prototype.reset = function() {
     this.x = 202;
     this.y = 402;
