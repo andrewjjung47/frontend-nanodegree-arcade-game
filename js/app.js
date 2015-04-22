@@ -50,6 +50,8 @@ var Player = function(charImage) {
     this.y = 402;
     this.row = (this.y + 13) / 83;
 
+    var _this = this;
+
     document.addEventListener('keyup', function(e) {
       var allowedKeys = {
           37: 'left',
@@ -59,8 +61,8 @@ var Player = function(charImage) {
       };
 
       if (!pause) {
-        player.handleInput(allowedKeys[e.keyCode]);
-        player.render(); // makes moves more responsive.
+        _this.handleInput(allowedKeys[e.keyCode]);
+        _this.render(); // makes moves more responsive.
       }
     });
 };
@@ -124,9 +126,9 @@ Player.prototype.handleInput = function(key) {
  */
 Player.prototype.checkCollision = function(obj) {
     // check if the object is in the same row as the character
-    if (obj.row === player.row) {
+    if (obj.row === this.row) {
       // check if the object overlaps with the player
-      if (obj.left + obj.width > player.left && obj.left < player.left + player.width) {
+      if (obj.left + obj.width > this.left && obj.left < this.left + this.width) {
         return true;
       }
     }
@@ -136,7 +138,7 @@ Player.prototype.checkCollision = function(obj) {
 Player.prototype.reset = function() {
     this.x = 202;
     this.y = 402;
-    player.render();
+    this.render();
 };
 
 // Now instantiate your objects.
