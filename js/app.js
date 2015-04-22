@@ -65,9 +65,20 @@ var Player = function(charImage) {
     });
 };
 
+/**
+ * Check collision with any collidable object defined in the game.
+ * Take appropriate action in case of a collision.
+ */
 Player.prototype.update = function() {
     this.row = (this.y + 13) / 83;
     this.left = this.x + 18; // furthest left pixel of the player
+
+    for (var i = 0; i < allEnemies.length; i++) {
+      if (this.checkCollision(allEnemies[i])) {
+        this.reset();
+        break;
+      }
+    }
 };
 
 Player.prototype.render = function() {

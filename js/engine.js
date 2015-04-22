@@ -91,7 +91,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        checkCollisions();
     }
 
     /* Check whether the character has collided with the enemy. */
