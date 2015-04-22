@@ -1,7 +1,7 @@
 body {
 }
 
-#main, #char-select, #back-ground, #player-canvas {
+#main, #char-select, #back-ground, #player-canvas, #object-canvas {
   position: absolute;
   left: 0;
   right: 0;
@@ -10,8 +10,12 @@ body {
   z-index: 0;
 }
 
-#char-select {
+#player-canvas {
   z-index: 1;
+}
+
+#char-select {
+  z-index: 2;
 }
 
 #back-ground {

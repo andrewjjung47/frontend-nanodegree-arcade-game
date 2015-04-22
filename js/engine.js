@@ -49,7 +49,6 @@ var Engine = (function(global) {
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
-        rocks.render();
         if (!pause) {
          /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
@@ -79,6 +78,7 @@ var Engine = (function(global) {
       renderBackground();
       main();
       charSelect();
+      rocks = new Rock();
     }
 
     /* This function is called by main (our game loop) and itself calls all

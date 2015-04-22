@@ -159,17 +159,20 @@ Player.prototype.reset = function() {
     this.render();
 };
 
+// Create separate canvas for players to make players animate more reponsively to the key stroke.
+// Rendering on this canvas will be triggered by key press event.
+var objectsCanvas = new Utils.Canvas('object-canvas', 505, 606);
+      document.body.appendChild(objectsCanvas.canvas);
+
 var Rock = function() {
   this.sprite = 'images/Rock.png';
-  this.width = 65; // 18px blank on each sides of the image
+  this.width = 86;
   this.x = 202;
-  this.y = 319;
-  this.row = (this.y + 13) / 83;
-  this.left = this.x + 18; // furthest left pixel of the player
-};
+  this.y = 307;
+  this.row = Math.round((this.y + 25) / 83);
+  this.left = this.x + 8; //8px of margin on left side
 
-Rock.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  objectsCanvas.ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now instantiate your objects.
@@ -185,6 +188,6 @@ for (var i = 0; i < level; i++)
 // Do not initialize player object before character selection
 var player = null;
 
-var rocks = new Rock();
+var rocks = null;
 
 
