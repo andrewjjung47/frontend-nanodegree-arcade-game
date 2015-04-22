@@ -35,6 +35,11 @@ Enemy.prototype.reset = function() {
     this.y =  this.row * 83 - 23;
 };
 
+// Create separate canvas for players to make players animate more reponsively to the key stroke.
+// Rendering on this canvas will be triggered by key press event.
+var playerCanvas = new Utils.Canvas('player-canvas', 505, 606);
+      document.body.appendChild(playerCanvas.canvas);
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -53,7 +58,10 @@ var Player = function(charImage) {
           40: 'down'
       };
 
-      player.handleInput(allowedKeys[e.keyCode]);
+      if (!pause) {
+        player.handleInput(allowedKeys[e.keyCode]);
+        player.render(); // makes moves more responsive.
+      }
     });
 };
 
@@ -63,7 +71,8 @@ Player.prototype.update = function() {
 };
 
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    playerCanvas.ctx.clearRect(0, 0, 505, 606);
+    playerCanvas.ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 /* Check if the new movement command would bring the player
@@ -100,6 +109,7 @@ Player.prototype.handleInput = function(key) {
 Player.prototype.reset = function() {
     this.x = 202;
     this.y = 402;
+    player.render();
 };
 
 // Now instantiate your objects.

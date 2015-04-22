@@ -1,7 +1,7 @@
 body {
 }
 
-#main, #char-select, #back-ground {
+#main, #char-select, #back-ground, #player-canvas {
   position: absolute;
   left: 0;
   right: 0;

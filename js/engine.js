@@ -17,6 +17,12 @@
 // TODO: change the reference for character and enemies position coordinate and
 // bottom left of the image.
 
+/**
+ * Boolean to pause the game or not.
+ * @type {Boolean}
+ */
+var pause = true;
+
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -29,12 +35,6 @@ var Engine = (function(global) {
 
     var mainCanvas = new Utils.Canvas('main', 505, 606);
     doc.body.appendChild(mainCanvas.canvas);
-
-    /**
-     * Boolean to pause the game or not.
-     * @type {Boolean}
-     */
-    var pause = true;
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -144,8 +144,6 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
-        if (player !== null) player.render();
     }
 
      /**
@@ -240,6 +238,8 @@ var Engine = (function(global) {
                 console.log(pause);
               }
             });
+
+            player.render();
             return;
           }
 
