@@ -49,6 +49,7 @@ var Player = function(charImage) {
     this.x = 202;
     this.y = 402;
     this.row = (this.y + 13) / 83;
+    this.left = this.x + 18; // furthest left pixel of the player
 
     var _this = this;
 
@@ -67,38 +68,32 @@ var Player = function(charImage) {
     });
 };
 
-/**
- * Check collision with any collidable object defined in the game.
- * Take appropriate action in case of a collision.
- */
-Player.prototype.update = function() {
-    this.row = (this.y + 13) / 83;
-    this.left = this.x + 18; // furthest left pixel of the player
-
-    for (var i = 0; i < allEnemies.length; i++) {
-      if (this.checkCollision(allEnemies[i])) {
-        this.reset();
-        break;
-      }
-    }
-};
-
 Player.prototype.render = function() {
     playerCanvas.ctx.clearRect(0, 0, 505, 606);
     playerCanvas.ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 /* Check if the new movement command would bring the player
-outside the canvas, and if it doesn't move the player */
+outside the canvas or collide with rocks, and if it doesn't move the player */
 Player.prototype.move = function(direction, displacement) {
-    var temp;
+    var temp = {width: this.width};
     if (direction === 'x') {
-        temp = this.x + displacement;
-        if (temp >= 0 && temp <= 404) this.x = temp;
+        temp.x = this.x + displacement;
+        temp.left = temp.x + 18;
+        temp.row = this.row;
+        if (temp.x >= 0 && temp.x <= 404 && !this.checkCollision(rocks, temp)) {
+          this.x = temp.x;
+          this.left = this.x + 18;
+        }
     }
     else if (direction === 'y') {
-        temp = this.y + displacement;
-        if (temp >= -13 && temp <= 404) this.y = temp;
+        temp.y = this.y + displacement;
+        temp.row = (temp.y + 13)/83;
+        temp.left = this.left;
+        if (temp.y >= -13 && temp.y <= 404 && !this.checkCollision(rocks, temp)) {
+          this.y = temp.y;
+          this.row = temp.row;
+        }
     }
 };
 
@@ -121,24 +116,60 @@ Player.prototype.handleInput = function(key) {
 
 /**
  * Check whether the character has collided with an object. The object must have
- * properties row, left and width.
+ * properties row, left and width. Second argument can be used when dummy object
+ * should be used instead of the player.
  * @return {boolean} true if the player has collided with the object
  */
 Player.prototype.checkCollision = function(obj) {
-    // check if the object is in the same row as the character
-    if (obj.row === this.row) {
-      // check if the object overlaps with the player
-      if (obj.left + obj.width > this.left && obj.left < this.left + this.width) {
-        return true;
+  if (arguments.length === 2) _this = arguments[1];
+  else _this = this;
+
+  if (obj === null) {
+    return false;
+  }
+  // check if the object is in the same row as the character
+  else if (obj.row === _this.row) {
+    // check if the object overlaps with the player
+    if (obj.left + obj.width > _this.left && obj.left < _this.left + _this.width) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
+ * Check collision with any collidable object defined in the game.
+ * Take appropriate action in case of a collision.
+ */
+Player.prototype.update = function() {
+    this.row = (this.y + 13) / 83;
+    this.left = this.x + 18; // furthest left pixel of the player
+
+    for (var i = 0; i < allEnemies.length; i++) {
+      if (this.checkCollision(allEnemies[i])) {
+        this.reset();
+        break;
       }
     }
-    return false;
 };
 
 Player.prototype.reset = function() {
     this.x = 202;
     this.y = 402;
     this.render();
+};
+
+var Rock = function() {
+  this.sprite = 'images/Rock.png';
+  this.width = 65; // 18px blank on each sides of the image
+  this.x = 202;
+  this.y = 319;
+  this.row = (this.y + 13) / 83;
+  this.left = this.x + 18; // furthest left pixel of the player
+};
+
+Rock.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now instantiate your objects.
@@ -153,5 +184,7 @@ for (var i = 0; i < level; i++)
 
 // Do not initialize player object before character selection
 var player = null;
+
+var rocks = new Rock();
 
 

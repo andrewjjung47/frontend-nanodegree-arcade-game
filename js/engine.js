@@ -49,6 +49,7 @@ var Engine = (function(global) {
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
+        rocks.render();
         if (!pause) {
          /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
@@ -296,7 +297,8 @@ var Engine = (function(global) {
         'images/char-princess-girl.png',
         'images/Selector.png',
         'images/Key.png',
-        'images/Gem Blue.png'
+        'images/Gem Blue.png',
+        'images/Rock.png'
     ]);
     Resources.onReady(init);
 
