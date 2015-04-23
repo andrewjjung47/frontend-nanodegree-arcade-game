@@ -1,4 +1,4 @@
-var level = 10;
+var level = 1;
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -180,7 +180,7 @@ var Rock = function() {
 // Place the player object in a variable called player
 var allEnemies = [];
 // Enemy number matches level
-for (var i = 0; i < level; i++)
+for (var i = 3; i < 4 + level / 2; i++)
 {
     allEnemies[i] = new Enemy();
 }

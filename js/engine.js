@@ -149,11 +149,12 @@ var Engine = (function(global) {
      /**
      * Render background on a separate canvas to avoid repeatedly redrawing it
      */
+    var backgroundCanvas = new Utils.Canvas('back-ground', 606, 606);
+    doc.body.appendChild(backgroundCanvas.canvas);
     function renderBackground() {
-      var backgroundCanvas = new Utils.Canvas('back-ground', 606, 606);
-      doc.body.appendChild(backgroundCanvas.canvas);
-
       var ctx = backgroundCanvas.ctx;
+
+      ctx.clearRect(0, 0, 505, 606);
 
       /* This array holds the relative URL to the image used
        * for that particular row of the game level.
@@ -229,9 +230,9 @@ var Engine = (function(global) {
       function keyHandler(e) {
           var allowedKeys = {
               37: 'left',
-              //38: 'up',
+              38: 'up',
               39: 'right',
-              //40: 'down',
+              40: 'down',
               13: 'enter'
           };
 
@@ -242,6 +243,12 @@ var Engine = (function(global) {
           }
           else if (input === 'right' && character < charImages.length - 1) {
             character++;
+          }
+          else if (input === 'up') {
+            level++;
+          }
+          else if (input === 'down' && level > 1) {
+            level--;
           }
           else if (input === 'enter') {
             document.removeEventListener('keyup', keyHandler);
@@ -261,6 +268,7 @@ var Engine = (function(global) {
           }
 
           renderChar();
+          renderBackground();
       }
 
       /**
