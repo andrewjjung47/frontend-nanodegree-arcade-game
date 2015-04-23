@@ -291,19 +291,23 @@ var Engine = (function(global) {
         ctx.textAlign = 'left';
         ctx.fillStyle = 'black';
         ctx.font = '17px Courier New';
-        ctx.fillText('Use left and right keys to move the selection', 15, 300);
-        ctx.fillText('cursor and press enter key to select a', 15, 320);
-        ctx.fillText('character.', 15, 340);
+        // Starting vertical position of the character selection instruction section
+        var paragvert = 300;
+        ctx.fillText('Use left and right keys to move the selection', 15, paragvert);
+        ctx.fillText('cursor and up and down keys to change level.', 15, paragvert + 20);
+        ctx.fillText('Press enter key to start a game.', 15, paragvert + 40);
 
-        ctx.fillText('How to play:', 15, 360);
-        ctx.fillText('  - Use up, down, left, and right keys to move', 15, 380);
-        ctx.fillText("    your character. Press 'p' to pause.", 15, 400);
-        ctx.fillText('  - Collision with a bug or touching the water', 15, 420);
-        ctx.fillText('    will cost you one heart.', 15, 440);
-        ctx.fillText('  - Move to the next level by obtaining a key.', 15, 460);
-        ctx.fillText('  - Blue gem will create a ground on the water,', 15, 480);
-        ctx.fillText('    and orange gem will help you break a stone.', 15, 500);
-        ctx.fillText('  - Star will make you invincible for 5 seconds.', 15, 520);
+        // Starting vertical position of the how to play section
+        paragvert = 380;
+        ctx.fillText('How to play:', 15, paragvert);
+        ctx.fillText('  - Use up, down, left, and right keys to move', 15, paragvert + 20);
+        ctx.fillText("    your character. Press 'p' to pause.", 15, paragvert + 40);
+        ctx.fillText('  - Collision with a bug or touching the water', 15, paragvert + 60);
+        ctx.fillText('    will cost you one heart.', 15, paragvert + 80);
+        ctx.fillText('  - Move to the next level by obtaining a key.', 15, paragvert + 100);
+        ctx.fillText('  - Blue gem will create a ground on the water,', 15, paragvert + 120);
+        ctx.fillText('    and orange gem will help you break a stone.', 15, paragvert + 140);
+        ctx.fillText('  - Star will make you invincible for 5 seconds.', 15, paragvert + 160);
       }
     }
 
