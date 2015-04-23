@@ -254,6 +254,11 @@ var Engine = (function(global) {
             document.removeEventListener('keyup', keyHandler);
             document.getElementById('char-select').remove();
             player = new Player(charImages[character]);
+            // Enemy number changes according to level
+            for (var i = 0; i < 2 + level / 2; i++)
+            {
+                allEnemies[i] = new Enemy();
+            }
             pause = false;
             // for test purpose
             document.addEventListener('keyup', function(e) {

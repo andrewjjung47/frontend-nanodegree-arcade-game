@@ -175,15 +175,9 @@ var Rock = function() {
   objectsCanvas.ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
-// Enemy number matches level
-for (var i = 3; i < 4 + level / 2; i++)
-{
-    allEnemies[i] = new Enemy();
-}
 
 // Do not initialize player object before character selection
 var player = null;
