@@ -150,8 +150,10 @@ var Engine = (function(global) {
      * Render background on a separate canvas to avoid repeatedly redrawing it
      */
     function renderBackground() {
-      var backgroundCanvas = new Utils.Canvas('back-ground', 505, 606);
+      var backgroundCanvas = new Utils.Canvas('back-ground', 606, 606);
       doc.body.appendChild(backgroundCanvas.canvas);
+
+      var ctx = backgroundCanvas.ctx;
 
       /* This array holds the relative URL to the image used
        * for that particular row of the game level.
@@ -181,9 +183,24 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                backgroundCanvas.ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(Resources.get(rowImages[row]),
+                                               col * 101 + 101, row * 83);
             }
         }
+
+        ctx.fillStyle = 'black';
+        ctx.font = '17px Courier New';
+        ctx.fillText('Level:' + level, 1, 90);
+
+        ctx.drawImage(Resources.get('images/Heart.png'), 5, 90, 40, 68);
+        ctx.fillText(':' + 10, 52, 130);
+
+        ctx.drawImage(Resources.get('images/Gem Orange.png'), 5, 135, 40, 68);
+        ctx.fillText(':' + 10, 52, 181);
+
+        var a = 5;
+        ctx.drawImage(Resources.get('images/Star.png'), 5, 185, 40, 68);
+        ctx.fillText(':' + a.toFixed(1), 52, 230);
     }
 
     /**
@@ -270,6 +287,23 @@ var Engine = (function(global) {
         ctx.font = '70px Courier New';
         ctx.textAlign = 'center';
         ctx.fillText('Characters', 250, 120);
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = 'black';
+        ctx.font = '17px Courier New';
+        ctx.fillText('Use left and right keys to move the selection', 15, 300);
+        ctx.fillText('cursor and press enter key to select a', 15, 320);
+        ctx.fillText('character.', 15, 340);
+
+        ctx.fillText('How to play:', 15, 360);
+        ctx.fillText('  - Use up, down, left, and right keys to move', 15, 380);
+        ctx.fillText("    your character. Press 'p' to pause.", 15, 400);
+        ctx.fillText('  - Collision with a bug or touching the water', 15, 420);
+        ctx.fillText('    will cost you one heart.', 15, 440);
+        ctx.fillText('  - Move to the next level by obtaining a key.', 15, 460);
+        ctx.fillText('  - Blue gem will create a ground on the water,', 15, 480);
+        ctx.fillText('    and orange gem will help you break a stone.', 15, 500);
+        ctx.fillText('  - Star will make you invincible for 5 seconds.', 15, 520);
       }
     }
 
@@ -298,7 +332,10 @@ var Engine = (function(global) {
         'images/Selector.png',
         'images/Key.png',
         'images/Gem Blue.png',
-        'images/Rock.png'
+        'images/Rock.png',
+        'images/Heart.png',
+        'images/Gem Orange.png',
+        'images/Star.png'
     ]);
     Resources.onReady(init);
 

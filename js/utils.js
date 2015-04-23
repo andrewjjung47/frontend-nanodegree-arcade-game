@@ -9,8 +9,8 @@ window.Utils = window.Utils || {};
  */
 window.Utils.Canvas = function(id, width, height) {
     var canvas = window.document.createElement('canvas');
-    canvas.width = 505;
-    canvas.height = 606;
+    canvas.width = width;
+    canvas.height = height;
     canvas.setAttribute('id', id);
 
     this.canvas = canvas;

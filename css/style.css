@@ -3,10 +3,7 @@ body {
 
 #main, #char-select, #back-ground, #player-canvas, #object-canvas {
   position: absolute;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
+  right: 292px;
   z-index: 0;
 }
 
