@@ -1,4 +1,12 @@
 var level = 1;
+function updateLevel() {
+  level++;
+  var numEnemies = 2 + Math.floor(level / 2);
+  if (allEnemies.length < numEnemies) {
+    allEnemies.push(new Enemy());
+  }
+  renderBackground();
+}
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -30,7 +38,7 @@ Enemy.prototype.render = function() {
 
 Enemy.prototype.reset = function() {
     this.speed = Math.round(Math.random() * 350) + 50; // speed within range of [50, 400) px/s
-    this.x = Math.round(Math.random() * -level) * 100 -101; // prevent enemies to show up all at once
+    this.x = Math.round(-Math.random() * level) * 100 -101; // prevent enemies to show up all at once
     this.row = window.Utils.intGenerator(1, 3); // random position
     this.y =  this.row * 83 - 23;
 };
@@ -64,6 +72,12 @@ var Player = function(charImage) {
       if (!pause) {
         _this.handleInput(allowedKeys[e.keyCode]);
         _this.render(); // makes moves more responsive.
+        if (_this.checkCollision(levelKey)) {
+          player.reset();
+          updateLevel();
+          levelKey = new Key();
+          renderObjects();
+        }
       }
     });
 };
@@ -81,19 +95,24 @@ Player.prototype.move = function(direction, displacement) {
         temp.x = this.x + displacement;
         temp.left = temp.x + 18;
         temp.row = this.row;
-        if (temp.x >= 0 && temp.x <= 404 && !this.checkCollision(rocks, temp)) {
-          this.x = temp.x;
-          this.left = this.x + 18;
-        }
+        temp.y = this.y;
     }
     else if (direction === 'y') {
         temp.y = this.y + displacement;
         temp.row = (temp.y + 13)/83;
         temp.left = this.left;
-        if (temp.y >= -13 && temp.y <= 404 && !this.checkCollision(rocks, temp)) {
-          this.y = temp.y;
-          this.row = temp.row;
+        temp.x = this.x;
+    }
+    if (temp.x >= 0 && temp.x <= 404 && temp.y >= -13 && temp.y <= 404) {
+        for (var i = 0; i < rocks.length; i++) {
+          if (this.checkCollision(rocks[i], temp)) {
+            return;
+          }
         }
+        this.x = temp.x;
+        this.y = temp.y;
+        this.left = temp.left;
+        this.row = temp.row;
     }
 };
 
@@ -164,6 +183,19 @@ Player.prototype.reset = function() {
 var objectsCanvas = new Utils.Canvas('object-canvas', 505, 606);
       document.body.appendChild(objectsCanvas.canvas);
 
+function renderObjects() {
+  var ctx = objectsCanvas.ctx;
+  ctx.clearRect(0, 0, 505, 606);
+  if (rocks !== []) {
+    for (var i = 0; i < rocks.length; i++) {
+      ctx.drawImage(Resources.get(rocks[i].sprite), rocks[i].x, rocks[i].y);
+    }
+  }
+  if (levelKey !== null) {
+    ctx.drawImage(Resources.get(levelKey.sprite), levelKey.x, levelKey.y);
+  }
+}
+
 var Rock = function() {
   this.sprite = 'images/Rock.png';
   this.width = 86;
@@ -171,9 +203,74 @@ var Rock = function() {
   this.y = 307;
   this.row = Math.round((this.y + 25) / 83);
   this.left = this.x + 8; //8px of margin on left side
-
-  objectsCanvas.ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+var Key = function() {
+  this.sprite = 'images/Key.png';
+  this.width = 100; // width does not really matter, but what column this is in matters in this case
+  this.x = 101 * window.Utils.intGenerator(0, 4);
+  this.y = -20;
+  this.row = 0;
+  this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
+};
+
+/**
+ * Render background on a separate canvas to avoid repeatedly redrawing it
+ */
+var backgroundCanvas = new Utils.Canvas('back-ground', 606, 606);
+document.body.appendChild(backgroundCanvas.canvas);
+function renderBackground() {
+  var ctx = backgroundCanvas.ctx;
+
+  ctx.clearRect(0, 0, 505, 606);
+
+  /* This array holds the relative URL to the image used
+   * for that particular row of the game level.
+   */
+  var rowImages = [
+            'images/water-block.png',   // Top row is water
+            'images/stone-block.png',   // Row 1 of 3 of stone
+            'images/stone-block.png',   // Row 2 of 3 of stone
+            'images/stone-block.png',   // Row 3 of 3 of stone
+            'images/grass-block.png',   // Row 1 of 2 of grass
+            'images/grass-block.png'    // Row 2 of 2 of grass
+        ],
+        numRows = 6,
+        numCols = 5,
+        row, col;
+
+    /* Loop through the number of rows and columns we've defined above
+     * and, using the rowImages array, draw the correct image for that
+     * portion of the "grid"
+     */
+    for (row = 0; row < numRows; row++) {
+        for (col = 0; col < numCols; col++) {
+            /* The drawImage function of the canvas' context element
+             * requires 3 parameters: the image to draw, the x coordinate
+             * to start drawing and the y coordinate to start drawing.
+             * We're using our Resources helpers to refer to our images
+             * so that we get the benefits of caching these images, since
+             * we're using them over and over.
+             */
+            ctx.drawImage(Resources.get(rowImages[row]),
+                                           col * 101 + 101, row * 83);
+        }
+    }
+
+    ctx.fillStyle = 'black';
+    ctx.font = '17px Courier New';
+    ctx.fillText('Level:' + level, 1, 90);
+
+    ctx.drawImage(Resources.get('images/Heart.png'), 5, 90, 40, 68);
+    ctx.fillText(':' + 10, 52, 130);
+
+    ctx.drawImage(Resources.get('images/Gem Orange.png'), 5, 135, 40, 68);
+    ctx.fillText(':' + 10, 52, 181);
+
+    var a = 5;
+    ctx.drawImage(Resources.get('images/Star.png'), 5, 185, 40, 68);
+    ctx.fillText(':' + a.toFixed(1), 52, 230);
+}
 
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -182,6 +279,7 @@ var allEnemies = [];
 // Do not initialize player object before character selection
 var player = null;
 
-var rocks = null;
+var rocks = [];
+var levelKey = null;
 
 
