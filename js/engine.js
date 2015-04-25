@@ -78,9 +78,9 @@ var Engine = (function(global) {
       renderBackground();
       main();
       charSelect();
-      rocks.push(new Rock());
-      levelKey = new Key();
-      renderObjects();
+      rocks.push(new window.GameObject.Rock());
+      levelKey = new window.GameObject.Key();
+      window.GameObject.renderObjects();
     }
 
     /* This function is called by main (our game loop) and itself calls all

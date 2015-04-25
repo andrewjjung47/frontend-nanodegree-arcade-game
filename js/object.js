@@ -1,0 +1,56 @@
+// Add Entity object to global.window
+window.GameObject = window.GameObject || {};
+
+// Use immediate invocation to reduce global namespace litter
+(function() {
+  // Create separate canvas for players to make players animate more reponsively to the key stroke.
+  // Rendering on this canvas will be triggered by key press event.
+  var objectsCanvas = new Utils.Canvas('object-canvas', 505, 606);
+  document.body.appendChild(objectsCanvas.canvas);
+  var ctx = objectsCanvas.ctx;
+
+
+  var Rock = function() {
+    this.sprite = 'images/Rock.png';
+    this.width = 86;
+    this.x = 202;
+    this.y = 307;
+    this.row = Math.round((this.y + 25) / 83);
+    this.left = this.x + 8; //8px of margin on left side
+    this.ctx = ctx;
+  };
+
+  Rock.prototype.render = window.Utils.renderImg;
+
+
+  var Key = function() {
+    this.sprite = 'images/Key.png';
+    this.width = 100; // width does not really matter, but what column this is in matters in this case
+    this.x = 101 * window.Utils.intGenerator(0, 4);
+    this.y = -20;
+    this.row = 0; // always stays in the first row
+    this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
+    this.ctx = ctx;
+  };
+
+  Key.prototype.render = window.Utils.renderImg;
+
+
+  window.GameObject.Rock = Rock;
+  window.GameObject.Key = Key;
+
+
+  window.GameObject.renderObjects = function() {
+    ctx.clearRect(0, 0, 505, 606);
+    if (rocks !== []) {
+      for (var i = 0; i < rocks.length; i++) {
+        rocks[i].render();
+      }
+    }
+    if (levelKey !== null) {
+      levelKey.render();
+    }
+  }
+
+
+}) ();

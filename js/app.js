@@ -39,10 +39,10 @@ var Player = function(charImage) {
         _this.handleInput(allowedKeys[e.keyCode]);
         _this.render(); // makes moves more responsive.
         if (_this.checkCollision(levelKey)) {
-          player.reset();
+          _this.reset();
           updateLevel();
-          levelKey = new Key();
-          renderObjects();
+          levelKey = new window.GameObject.Key();
+          window.GameObject.renderObjects();
         }
       }
     });
@@ -146,7 +146,7 @@ Player.prototype.reset = function() {
     this.render();
 };
 
-// Create separate canvas for players to make players animate more reponsively to the key stroke.
+/*// Create separate canvas for players to make players animate more reponsively to the key stroke.
 // Rendering on this canvas will be triggered by key press event.
 var objectsCanvas = new Utils.Canvas('object-canvas', 505, 606);
       document.body.appendChild(objectsCanvas.canvas);
@@ -180,7 +180,7 @@ var Key = function() {
   this.y = -20;
   this.row = 0;
   this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
-};
+};*/
 
 /**
  * Render background on a separate canvas to avoid repeatedly redrawing it

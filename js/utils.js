@@ -17,7 +17,20 @@ window.Utils.Canvas = function(id, width, height) {
     this.ctx = canvas.getContext('2d');
 };
 
+/**
+ * Randomly generate an integer between min and max integers, inclusive.
+ * @param  {integer} min minimum integer
+ * @param  {integer} max maximum integer
+ * @return {integer}     randomly generated integer
+ */
 window.Utils.intGenerator = function(min, max) {
     /* Generates a random integer in between min and max, inclusive */
     return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+/**
+ * Render an image of a general object. Only intended to be used for prototype.
+ */
+window.Utils.renderImg = function() {
+  this.ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };

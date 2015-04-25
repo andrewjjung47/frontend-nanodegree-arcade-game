@@ -5,13 +5,11 @@ window.Entity = window.Entity || {};
 (function() {
   // Enemies our player must avoid
   var Enemy = function() {
-      // Variables applied to each of our instances go here,
-      // we've provided one for you to get started
-
       // The image/sprite for our enemies, this uses
       // a helper we've provided to easily load images
       this.sprite = 'images/enemy-bug.png';
       this.width = 95; // 3px blank on each sides of the image
+      this.ctx = ctx; // this ctx is the mainCanvas ctx saved in global namespace
       this.reset();
   };
 
@@ -26,17 +24,18 @@ window.Entity = window.Entity || {};
       this.left = this.x + 3; // furthest left pixel of the enemy bug
   };
 
-  // Draw the enemy on the screen, required method for game
-  Enemy.prototype.render = function() {
-      ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-  };
+  Enemy.prototype.render = window.Utils.renderImg;
 
+/**
+ * Randomly sets an enemy's speed and position.
+ */
   Enemy.prototype.reset = function() {
       this.speed = Math.round(Math.random() * 350) + 50; // speed within range of [50, 400) px/s
       this.x = Math.round(-Math.random() * level) * 100 -101; // prevent enemies to show up all at once
       this.row = window.Utils.intGenerator(1, 3); // random position
       this.y =  this.row * 83 - 23;
   };
+
 
   window.Entity.Enemy = Enemy;
 }) ();
