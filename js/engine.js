@@ -188,7 +188,7 @@ var Engine = (function(global) {
             // Enemy number changes according to level
             for (var i = 0; i < 2 + level / 2; i++)
             {
-                allEnemies[i] = new Enemy();
+                allEnemies[i] = new window.Entity.Enemy();
             }
             pause = false;
             // for test purpose
