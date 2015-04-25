@@ -96,19 +96,6 @@ var Engine = (function(global) {
         updateEntities(dt);
     }
 
-    /* Check whether the character has collided with the enemy. */
-    function checkCollisions() {
-        // check if an enemy is in the same row as the character
-        allEnemies.forEach(function(enemy) {
-            if (enemy.row === player.row) {
-                // check if the enemy overlaps with the player
-                if (enemy.left + enemy.width > player.left && enemy.left < player.left + player.width) {
-                    player.reset();
-                }
-            }
-        });
-    }
-
     /* This is called by the update function  and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
      * their update() methods. It will then call the update function for your
@@ -213,6 +200,7 @@ var Engine = (function(global) {
             });
 
             player.render();
+            renderBackground();
             return;
           }
 

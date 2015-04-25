@@ -53,6 +53,7 @@ var playerCanvas = new Utils.Canvas('player-canvas', 505, 606);
 // a handleInput() method.
 var Player = function(charImage) {
     this.sprite = charImage;
+    this.life = 4;
     this.width = 65; // 18px blank on each sides of the image
     this.x = 202;
     this.y = 402;
@@ -167,6 +168,8 @@ Player.prototype.update = function() {
     for (var i = 0; i < allEnemies.length; i++) {
       if (this.checkCollision(allEnemies[i])) {
         this.reset();
+        this.life--;
+        renderBackground();
         break;
       }
     }
@@ -262,7 +265,7 @@ function renderBackground() {
     ctx.fillText('Level:' + level, 1, 90);
 
     ctx.drawImage(Resources.get('images/Heart.png'), 5, 90, 40, 68);
-    ctx.fillText(':' + 10, 52, 130);
+    ctx.fillText(':' + (player ? player.life : 0), 52, 130);
 
     ctx.drawImage(Resources.get('images/Gem Orange.png'), 5, 135, 40, 68);
     ctx.fillText(':' + 10, 52, 181);
