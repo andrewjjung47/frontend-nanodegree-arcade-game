@@ -3,7 +3,7 @@ body {
 
 #main, #char-select, #back-ground, #player-canvas, #object-canvas {
   position: absolute;
-  right: 292px;
+  right: 33%;
   z-index: 0;
 }
 

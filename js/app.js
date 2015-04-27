@@ -41,7 +41,7 @@ var Player = function(charImage) {
         if (_this.checkCollision(levelKey)) {
           _this.reset();
           updateLevel();
-          levelKey = new GameObject.Key();
+          levelKey.reset();
           GameObject.renderObjects();
         }
       }

@@ -13,27 +13,35 @@ window.GameObject = window.GameObject || {};
   var Rock = function() {
     this.sprite = 'images/Rock.png';
     this.width = 86;
-    this.x = 202;
-    this.y = 307;
-    this.row = Math.round((this.y + 25) / 83);
-    this.left = this.x + 8; //8px of margin on left side
     this.ctx = ctx;
+    this.reset();
   };
 
   Rock.prototype.render = Utils.renderImg;
+
+  Rock.prototype.reset = function() {
+    this.x = Utils.intGenerator(0, 4) * 101;
+    this.left = this.x + 8; //8px of margin on left side
+    this.row = Utils.intGenerator(0, 5);
+    this.y = this.row * 83 - 25;
+  };
 
 
   var Key = function() {
     this.sprite = 'images/Key.png';
     this.width = 100; // width does not really matter, but what column this is in matters in this case
-    this.x = 101 * Utils.intGenerator(0, 4);
     this.y = -20;
     this.row = 0; // always stays in the first row
-    this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
     this.ctx = ctx;
+    this.reset();
   };
 
   Key.prototype.render = Utils.renderImg;
+
+  Key.prototype.reset = function() {
+    this.x = 101 * Utils.intGenerator(0, 4);
+    this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
+  };
 
   var GemOrange = function() {
     this.sprite = 'images/Gem Orange.png';
