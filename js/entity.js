@@ -24,7 +24,7 @@ window.Entity = window.Entity || {};
       this.left = this.x + 3; // furthest left pixel of the enemy bug
   };
 
-  Enemy.prototype.render = window.Utils.renderImg;
+  Enemy.prototype.render = Utils.renderImg;
 
 /**
  * Randomly sets an enemy's speed and position.
@@ -32,7 +32,7 @@ window.Entity = window.Entity || {};
   Enemy.prototype.reset = function() {
       this.speed = Math.round(Math.random() * 350) + 50; // speed within range of [50, 400) px/s
       this.x = Math.round(-Math.random() * level) * 100 -101; // prevent enemies to show up all at once
-      this.row = window.Utils.intGenerator(1, 3); // random position
+      this.row = Utils.intGenerator(1, 3); // random position
       this.y =  this.row * 83 - 23;
   };
 

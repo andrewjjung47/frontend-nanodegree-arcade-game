@@ -78,9 +78,11 @@ var Engine = (function(global) {
       renderBackground();
       main();
       charSelect();
-      rocks.push(new window.GameObject.Rock());
-      levelKey = new window.GameObject.Key();
-      window.GameObject.renderObjects();
+      rocks.push(new GameObject.Rock());
+      levelKey = new GameObject.Key();
+      gemOrange = new GameObject.GemOrange();
+      gemBlue = new GameObject.GemBlue();
+      GameObject.renderObjects();
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -188,7 +190,7 @@ var Engine = (function(global) {
             // Enemy number changes according to level
             for (var i = 0; i < 2 + level / 2; i++)
             {
-                allEnemies[i] = new window.Entity.Enemy();
+                allEnemies[i] = new Entity.Enemy();
             }
             pause = false;
             // for test purpose

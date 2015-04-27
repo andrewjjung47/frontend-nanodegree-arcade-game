@@ -20,24 +20,50 @@ window.GameObject = window.GameObject || {};
     this.ctx = ctx;
   };
 
-  Rock.prototype.render = window.Utils.renderImg;
+  Rock.prototype.render = Utils.renderImg;
 
 
   var Key = function() {
     this.sprite = 'images/Key.png';
     this.width = 100; // width does not really matter, but what column this is in matters in this case
-    this.x = 101 * window.Utils.intGenerator(0, 4);
+    this.x = 101 * Utils.intGenerator(0, 4);
     this.y = -20;
     this.row = 0; // always stays in the first row
     this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
     this.ctx = ctx;
   };
 
-  Key.prototype.render = window.Utils.renderImg;
+  Key.prototype.render = Utils.renderImg;
+
+  var GemOrange = function() {
+    this.sprite = 'images/Gem Orange.png';
+    this.width = 100; // width does not really matter, but what column this is in matters in this case
+    this.x = 101 * Utils.intGenerator(0, 4);
+    this.y = -35 + 83;
+    this.row = 0; // always stays in the first row
+    this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
+    this.ctx = ctx;
+  };
+
+  GemOrange.prototype.render = Utils.renderImg;
+
+  var GemBlue = function() {
+    this.sprite = 'images/Gem Blue.png';
+    this.width = 100; // width does not really matter, but what column this is in matters in this case
+    this.x = 101 * Utils.intGenerator(0, 4);
+    this.y = -35 + 83;
+    this.row = 0; // always stays in the first row
+    this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
+    this.ctx = ctx;
+  };
+
+  GemBlue.prototype.render = Utils.renderImg;
 
 
   window.GameObject.Rock = Rock;
   window.GameObject.Key = Key;
+  window.GameObject.GemOrange = GemOrange;
+  window.GameObject.GemBlue = GemBlue;
 
 
   window.GameObject.renderObjects = function() {
@@ -50,7 +76,13 @@ window.GameObject = window.GameObject || {};
     if (levelKey !== null) {
       levelKey.render();
     }
-  }
+    if (gemOrange !== null) {
+      gemOrange.render();
+    }
+    if (gemBlue !== null) {
+      gemBlue.render();
+    }
+  };
 
 
 }) ();

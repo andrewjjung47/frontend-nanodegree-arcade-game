@@ -3,7 +3,7 @@ function updateLevel() {
   level++;
   var numEnemies = 2 + Math.floor(level / 2);
   if (allEnemies.length < numEnemies) {
-    allEnemies.push(new window.Entity.Enemy());
+    allEnemies.push(new Entity.Enemy());
   }
   renderBackground();
 }
@@ -41,8 +41,8 @@ var Player = function(charImage) {
         if (_this.checkCollision(levelKey)) {
           _this.reset();
           updateLevel();
-          levelKey = new window.GameObject.Key();
-          window.GameObject.renderObjects();
+          levelKey = new GameObject.Key();
+          GameObject.renderObjects();
         }
       }
     });
@@ -146,42 +146,6 @@ Player.prototype.reset = function() {
     this.render();
 };
 
-/*// Create separate canvas for players to make players animate more reponsively to the key stroke.
-// Rendering on this canvas will be triggered by key press event.
-var objectsCanvas = new Utils.Canvas('object-canvas', 505, 606);
-      document.body.appendChild(objectsCanvas.canvas);
-
-function renderObjects() {
-  var ctx = objectsCanvas.ctx;
-  ctx.clearRect(0, 0, 505, 606);
-  if (rocks !== []) {
-    for (var i = 0; i < rocks.length; i++) {
-      ctx.drawImage(Resources.get(rocks[i].sprite), rocks[i].x, rocks[i].y);
-    }
-  }
-  if (levelKey !== null) {
-    ctx.drawImage(Resources.get(levelKey.sprite), levelKey.x, levelKey.y);
-  }
-}
-
-var Rock = function() {
-  this.sprite = 'images/Rock.png';
-  this.width = 86;
-  this.x = 202;
-  this.y = 307;
-  this.row = Math.round((this.y + 25) / 83);
-  this.left = this.x + 8; //8px of margin on left side
-};
-
-var Key = function() {
-  this.sprite = 'images/Key.png';
-  this.width = 100; // width does not really matter, but what column this is in matters in this case
-  this.x = 101 * window.Utils.intGenerator(0, 4);
-  this.y = -20;
-  this.row = 0;
-  this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
-};*/
-
 /**
  * Render background on a separate canvas to avoid repeatedly redrawing it
  */
@@ -249,5 +213,7 @@ var player = null;
 
 var rocks = [];
 var levelKey = null;
+var gemOrange = null;
+var gemBlue = null;
 
 
