@@ -37,5 +37,146 @@ window.Entity = window.Entity || {};
   };
 
 
+  // Create separate canvas for players to make players animate more reponsively to the key stroke.
+  // Rendering on this canvas will be triggered by key press event.
+  var playerCanvas = new Utils.Canvas('player-canvas', 505, 606);
+        document.body.appendChild(playerCanvas.canvas);
+
+  // Now write your own player class
+  // This class requires an update(), render() and
+  // a handleInput() method.
+  var Player = function(charImage) {
+      this.sprite = charImage;
+      this.life = 4;
+      this.width = 65; // 18px blank on each sides of the image
+      this.x = 202;
+      this.y = 402;
+      this.row = (this.y + 13) / 83;
+      this.left = this.x + 18; // furthest left pixel of the player
+
+      var _this = this;
+
+      document.addEventListener('keyup', function(e) {
+        var allowedKeys = {
+            37: 'left',
+            38: 'up',
+            39: 'right',
+            40: 'down'
+        };
+
+        if (!pause) {
+          _this.handleInput(allowedKeys[e.keyCode]);
+          _this.render(); // makes moves more responsive.
+          if (_this.checkCollision(levelKey)) {
+            _this.reset();
+            updateLevel();
+            levelKey.reset();
+            GameObject.renderObjects();
+          }
+        }
+      });
+  };
+
+  Player.prototype.render = function() {
+      playerCanvas.ctx.clearRect(0, 0, 505, 606);
+      playerCanvas.ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  };
+
+  /* Check if the new movement command would bring the player
+  outside the canvas or collide with rocks, and if it doesn't move the player */
+  Player.prototype.move = function(direction, displacement) {
+      var temp = {width: this.width};
+      if (direction === 'x') {
+          temp.x = this.x + displacement;
+          temp.left = temp.x + 18;
+          temp.row = this.row;
+          temp.y = this.y;
+      }
+      else if (direction === 'y') {
+          temp.y = this.y + displacement;
+          temp.row = (temp.y + 13)/83;
+          temp.left = this.left;
+          temp.x = this.x;
+      }
+      if (temp.x >= 0 && temp.x <= 404 && temp.y >= -13 && temp.y <= 404) {
+          for (var i = 0; i < rocks.length; i++) {
+            if (this.checkCollision(rocks[i], temp)) {
+              return;
+            }
+          }
+          this.x = temp.x;
+          this.y = temp.y;
+          this.left = temp.left;
+          this.row = temp.row;
+      }
+  };
+
+  Player.prototype.handleInput = function(key) {
+      switch (key) {
+          case 'left':
+              this.move('x', -101);
+              break;
+          case 'up':
+              this.move('y', -83);
+              break;
+          case 'right':
+              this.move('x', 101);
+              break;
+          case 'down':
+              this.move('y', 83);
+              break;
+      }
+  };
+
+  /**
+   * Check whether the character has collided with an object. The object must have
+   * properties row, left and width. Second argument can be used when dummy object
+   * should be used instead of the player.
+   * @return {boolean} true if the player has collided with the object
+   */
+  Player.prototype.checkCollision = function(obj) {
+    if (arguments.length === 2) _this = arguments[1];
+    else _this = this;
+
+    if (obj === null) {
+      return false;
+    }
+    // check if the object is in the same row as the character
+    else if (obj.row === _this.row) {
+      // check if the object overlaps with the player
+      if (obj.left + obj.width > _this.left && obj.left < _this.left + _this.width) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  /**
+   * Check collision with any collidable object defined in the game.
+   * Take appropriate action in case of a collision.
+   */
+  Player.prototype.update = function() {
+      this.row = (this.y + 13) / 83;
+      this.left = this.x + 18; // furthest left pixel of the player
+
+      for (var i = 0; i < allEnemies.length; i++) {
+        if (this.checkCollision(allEnemies[i])) {
+          this.reset();
+          this.life--;
+          renderBackground();
+          break;
+        }
+      }
+  };
+
+  Player.prototype.reset = function() {
+      this.x = 202;
+      this.y = 402;
+      this.render();
+  };
+
+
+
   window.Entity.Enemy = Enemy;
+  window.Entity.Player = Player;
 }) ();

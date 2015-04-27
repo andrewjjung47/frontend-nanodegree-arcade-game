@@ -186,7 +186,7 @@ var Engine = (function(global) {
           else if (input === 'enter') {
             document.removeEventListener('keyup', keyHandler);
             document.getElementById('char-select').remove();
-            player = new Player(charImages[character]);
+            player = new Entity.Player(charImages[character]);
             // Enemy number changes according to level
             for (var i = 0; i < 2 + level / 2; i++)
             {
