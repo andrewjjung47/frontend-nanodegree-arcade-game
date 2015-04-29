@@ -34,3 +34,23 @@ window.Utils.intGenerator = function(min, max) {
 window.Utils.renderImg = function() {
   this.ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+/**
+   * Check whether the character has collided with an object. The object must have
+   * properties row, left and width. Second argument can be used when dummy object
+   * should be used instead of the player.
+   * @return {boolean} true if the player has collided with the object
+   */
+  window.Utils.checkCollision = function(obj) {
+    if (obj === null) {
+      return false;
+    }
+    // check if the object is in the same row as the character
+    else if (obj.row === this.row) {
+      // check if the object overlaps with the player
+      if (obj.left + obj.width > this.left && obj.left < this.left + this.width) {
+        return true;
+      }
+    }
+    return false;
+  };

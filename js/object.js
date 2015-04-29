@@ -3,69 +3,80 @@ window.GameObject = window.GameObject || {};
 
 // Use immediate invocation to reduce global namespace litter
 (function() {
+  var intGenerator = Utils.intGenerator;
+  var renderImg = Utils.renderImg;
+
   // Create separate canvas for players to make players animate more reponsively to the key stroke.
   // Rendering on this canvas will be triggered by key press event.
   var objectsCanvas = new Utils.Canvas('object-canvas', 505, 606);
   document.body.appendChild(objectsCanvas.canvas);
   var ctx = objectsCanvas.ctx;
 
+  // Keep tack of objects to make sure they are not rendered on top of each other.
+  var listObjects = [];
 
-  var Rock = function() {
-    this.sprite = 'images/Rock.png';
-    this.width = 86;
-    this.ctx = ctx;
+
+  var Objects = function() {
+    this.width = 100; // for objects, width does not really matter, but what column it is in does
     this.reset();
   };
 
-  Rock.prototype.render = Utils.renderImg;
-
-  Rock.prototype.reset = function() {
-    this.x = Utils.intGenerator(0, 4) * 101;
-    this.left = this.x + 8; //8px of margin on left side
-    this.row = Utils.intGenerator(0, 5);
-    this.y = this.row * 83 - 25;
+  Objects.prototype.render = function() {
+    console.log(ctx);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   };
+
+  Objects.prototype.reset = function() {
+    this.x = intGenerator(0, 4) * 101;
+    this.left = this.x; // left margin does not really matter for objects
+    this.row = intGenerator(0, 5);
+    this.y = this.row * 83 - this.top; // this.top is the top margin
+  };
+
+
+  var Rock = function() {
+    this.base = Objects;
+    this.sprite = 'images/Rock.png';
+    this.top = 25;
+    this.base();
+  };
+
+  Rock.prototype = Object.create(Objects.prototype);
 
 
   var Key = function() {
+    this.base = Objects;
     this.sprite = 'images/Key.png';
-    this.width = 100; // width does not really matter, but what column this is in matters in this case
     this.y = -20;
     this.row = 0; // always stays in the first row
-    this.ctx = ctx;
-    this.reset();
+    this.base();
   };
 
-  Key.prototype.render = Utils.renderImg;
+  Key.prototype = Object.create(Objects.prototype);
 
   Key.prototype.reset = function() {
-    this.x = 101 * Utils.intGenerator(0, 4);
-    this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
+    // Key has fixed row and y property
+    this.x = 101 * intGenerator(0, 4);
+    this.left = this.x;
   };
 
   var GemOrange = function() {
+    this.base = Objects;
     this.sprite = 'images/Gem Orange.png';
-    this.width = 100; // width does not really matter, but what column this is in matters in this case
-    this.x = 101 * Utils.intGenerator(0, 4);
-    this.y = -35 + 83;
-    this.row = 0; // always stays in the first row
-    this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
-    this.ctx = ctx;
+    this.top = 35;
+    this.base();
   };
 
-  GemOrange.prototype.render = Utils.renderImg;
+  GemOrange.prototype = Object.create(Objects.prototype);
 
   var GemBlue = function() {
+    this.base = Objects;
     this.sprite = 'images/Gem Blue.png';
-    this.width = 100; // width does not really matter, but what column this is in matters in this case
-    this.x = 101 * Utils.intGenerator(0, 4);
-    this.y = -35 + 83;
-    this.row = 0; // always stays in the first row
-    this.left = this.x + 8; // left does not really matter, but what column this is in matters in this case
-    this.ctx = ctx;
+    this.top = 35;
+    this.base();
   };
 
-  GemBlue.prototype.render = Utils.renderImg;
+  GemBlue.prototype = Object.create(Objects.prototype);
 
 
   window.GameObject.Rock = Rock;
