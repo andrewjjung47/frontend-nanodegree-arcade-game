@@ -40,7 +40,7 @@ window.GameObject = window.GameObject || {};
     do {
       this.x = intGenerator(0, 4) * 101;
       this.left = this.x; // left margin does not really matter for objects
-      this.row = intGenerator(0, 5);
+      this.row = intGenerator(0, 4);
       this.y = this.row * 83 - this.top; // this.top is the top margin
     } while (checkObjectCollision(this));
   };
