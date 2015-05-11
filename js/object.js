@@ -30,6 +30,7 @@ window.GameObject = window.GameObject || {};
     this.width = 100; // for objects, width does not really matter, but what column it is in does
     this.reset();
     listObjects.push(this);
+    GameObject.renderObjects();
   };
 
   Objects.prototype.render = function() {
@@ -43,13 +44,8 @@ window.GameObject = window.GameObject || {};
       this.row = intGenerator(0, 4);
       this.y = this.row * 83 - this.top; // this.top is the top margin
     } while (checkObjectCollision(this));
+    GameObject.renderObjects();
   };
-
-  Objects.prototype.destroy = function() {
-    var index = listObjects.indexOf(this);
-    listObjects.splice(index, 1);
-  };
-
 
   var Rock = function() {
     this.base = Objects;
@@ -77,6 +73,7 @@ window.GameObject = window.GameObject || {};
       this.x = 101 * intGenerator(0, 4);
       this.left = this.x;
     } while (checkObjectCollision(this));
+    GameObject.renderObjects();
   };
 
   var GemOrange = function() {
@@ -107,7 +104,7 @@ window.GameObject = window.GameObject || {};
   window.GameObject.renderObjects = function() {
     ctx.clearRect(0, 0, 505, 606);
     // TODO: use listObject
-    if (rocks !== []) {
+    /*if (rocks !== []) {
       for (var i = 0; i < rocks.length; i++) {
         rocks[i].render();
       }
@@ -120,8 +117,16 @@ window.GameObject = window.GameObject || {};
     }
     if (gemBlue !== null) {
       gemBlue.render();
-    }
+    }*/
+    listObjects.forEach(function(gameObject) {
+      gameObject.render();
+    });
   };
 
+  window.GameObject.destroyObject = function(objRef) {
+    var index = listObjects.indexOf(objRef);
+    listObjects.splice(index, 1);
+    return null;
+  };
 
 }) ();

@@ -6,6 +6,9 @@ function updateLevel() {
     allEnemies.push(new Entity.Enemy());
   }
 
+  if (gemOrange !== null) {
+    GameObject.destroyObject(gemOrange);
+  }
   gemOrange = new GameObject.GemOrange();
   renderBackground();
 }
@@ -31,8 +34,7 @@ Entity.Player.prototype.update = function() {
 
     if (gemOrange !== null) {
       if (this.checkCollision(gemOrange)) {
-        gemOrange.destroy();
-        gemOrange = null;
+        gemOrange = GameObject.destroyObject(gemOrange);
         collectedOrangeGem++;
         renderBackground();
         GameObject.renderObjects();

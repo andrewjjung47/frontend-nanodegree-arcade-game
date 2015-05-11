@@ -71,7 +71,6 @@ window.Entity = window.Entity || {};
             _this.reset();
             updateLevel();
             levelKey.reset();
-            GameObject.renderObjects();
           }
         }
       });
