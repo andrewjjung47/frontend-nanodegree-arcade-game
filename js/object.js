@@ -14,23 +14,35 @@ window.GameObject = window.GameObject || {};
 
   // Keep tack of objects to make sure they are not rendered on top of each other.
   var listObjects = [];
+  var checkObjectCollision = function(obj1) {
+    if (listObjects.length === 0) return false;
+    var obj2, i;
+    for (i = 0; i < listObjects.length; i++) {
+      obj2 = listObjects[i];
+      if (obj1 !== obj2 && Utils.checkCollision(obj1, obj2)) return true;
+    }
+    return false;
+  };
 
+  window.checkObjectCollision = checkObjectCollision;
 
   var Objects = function() {
     this.width = 100; // for objects, width does not really matter, but what column it is in does
     this.reset();
+    listObjects.push(this);
   };
 
   Objects.prototype.render = function() {
-    console.log(ctx);
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   };
 
   Objects.prototype.reset = function() {
-    this.x = intGenerator(0, 4) * 101;
-    this.left = this.x; // left margin does not really matter for objects
-    this.row = intGenerator(0, 5);
-    this.y = this.row * 83 - this.top; // this.top is the top margin
+    do {
+      this.x = intGenerator(0, 4) * 101;
+      this.left = this.x; // left margin does not really matter for objects
+      this.row = intGenerator(0, 5);
+      this.y = this.row * 83 - this.top; // this.top is the top margin
+    } while (checkObjectCollision(this));
   };
 
 
@@ -55,9 +67,11 @@ window.GameObject = window.GameObject || {};
   Key.prototype = Object.create(Objects.prototype);
 
   Key.prototype.reset = function() {
-    // Key has fixed row and y property
-    this.x = 101 * intGenerator(0, 4);
-    this.left = this.x;
+    do {
+      // Key has fixed row and y property
+      this.x = 101 * intGenerator(0, 4);
+      this.left = this.x;
+    } while (checkObjectCollision(this));
   };
 
   var GemOrange = function() {
