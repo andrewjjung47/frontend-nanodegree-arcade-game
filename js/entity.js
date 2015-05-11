@@ -135,20 +135,7 @@ window.Entity = window.Entity || {};
    * @return {boolean} true if the player has collided with the object
    */
   Player.prototype.checkCollision = function(obj) {
-    if (arguments.length === 2) _this = arguments[1];
-    else _this = this;
-
-    if (obj === null) {
-      return false;
-    }
-    // check if the object is in the same row as the character
-    else if (obj.row === _this.row) {
-      // check if the object overlaps with the player
-      if (obj.left + obj.width > _this.left && obj.left < _this.left + _this.width) {
-        return true;
-      }
-    }
-    return false;
+    return Utils.checkCollision(this, obj);
   };
 
   /**

@@ -36,19 +36,15 @@ window.Utils.renderImg = function() {
 };
 
 /**
-   * Check whether the character has collided with an object. The object must have
-   * properties row, left and width. Second argument can be used when dummy object
-   * should be used instead of the player.
-   * @return {boolean} true if the player has collided with the object
+   * Check whether an object has collided with another object. The object must have
+   * properties row, left and width.
+   * @return {boolean} true when collision has occured
    */
-  window.Utils.checkCollision = function(obj) {
-    if (obj === null) {
-      return false;
-    }
-    // check if the object is in the same row as the character
-    else if (obj.row === this.row) {
-      // check if the object overlaps with the player
-      if (obj.left + obj.width > this.left && obj.left < this.left + this.width) {
+  window.Utils.checkCollision = function(obj1, obj2) {
+    // check if the two objects are in the same row
+    if (obj1.row === obj2.row) {
+      // check if they overlaps
+      if (obj1.left + obj1.width > obj2.left && obj1.left < obj2.left + obj2.width) {
         return true;
       }
     }
