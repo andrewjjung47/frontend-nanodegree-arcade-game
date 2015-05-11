@@ -107,6 +107,7 @@ window.GameObject = window.GameObject || {};
   window.GameObject.destroyObject = function(objRef) {
     var index = listObjects.indexOf(objRef);
     listObjects.splice(index, 1);
+    GameObject.renderObjects();
     return null;
   };
 

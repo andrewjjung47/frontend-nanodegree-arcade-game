@@ -37,7 +37,13 @@ Entity.Player.prototype.update = function() {
         gemOrange = GameObject.destroyObject(gemOrange);
         collectedOrangeGem++;
         renderBackground();
-        GameObject.renderObjects();
+      }
+    }
+
+    if (gemBlue !== null) {
+      if (this.checkCollision(gemBlue)) {
+        gemBlue = GameObject.destroyObject(gemBlue);
+        renderBackground();
       }
     }
 };
