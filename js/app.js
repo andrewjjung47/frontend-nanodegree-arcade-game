@@ -8,6 +8,32 @@ function updateLevel() {
   renderBackground();
 }
 
+var collectedOrangeGem = 0;
+
+/**
+ * Check collision with any collidable object defined in the game.
+ * Take appropriate action in case of a collision.
+ */
+Entity.Player.prototype.update = function() {
+    this.row = (this.y + 13) / 83;
+    this.left = this.x + 18; // furthest left pixel of the player
+
+    for (var i = 0; i < allEnemies.length; i++) {
+      if (this.checkCollision(allEnemies[i])) {
+        this.reset();
+        this.life--;
+        renderBackground();
+        break;
+      }
+    }
+
+    if (this.checkCollision(gemOrange)) {
+      gemOrange.reset();
+      collectedOrangeGem++;
+      renderBackground();
+      GameObject.renderObjects();
+    }
+};
 
 /**
  * Render background on a separate canvas to avoid repeatedly redrawing it
@@ -60,7 +86,7 @@ function renderBackground() {
     ctx.fillText(':' + (player ? player.life : 0), 52, 130);
 
     ctx.drawImage(Resources.get('images/Gem Orange.png'), 5, 135, 40, 68);
-    ctx.fillText(':' + 10, 52, 181);
+    ctx.fillText(':' + collectedOrangeGem, 52, 181);
 
     var a = 5;
     ctx.drawImage(Resources.get('images/Star.png'), 5, 185, 40, 68);

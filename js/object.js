@@ -101,6 +101,7 @@ window.GameObject = window.GameObject || {};
 
   window.GameObject.renderObjects = function() {
     ctx.clearRect(0, 0, 505, 606);
+    // TODO: use listObject
     if (rocks !== []) {
       for (var i = 0; i < rocks.length; i++) {
         rocks[i].render();
