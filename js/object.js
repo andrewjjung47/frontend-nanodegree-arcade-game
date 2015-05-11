@@ -45,6 +45,11 @@ window.GameObject = window.GameObject || {};
     } while (checkObjectCollision(this));
   };
 
+  Objects.prototype.destroy = function() {
+    var index = listObjects.indexOf(this);
+    listObjects.splice(index, 1);
+  };
+
 
   var Rock = function() {
     this.base = Objects;

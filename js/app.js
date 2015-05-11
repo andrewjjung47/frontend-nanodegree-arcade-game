@@ -5,6 +5,8 @@ function updateLevel() {
   if (allEnemies.length < numEnemies) {
     allEnemies.push(new Entity.Enemy());
   }
+
+  gemOrange = new GameObject.GemOrange();
   renderBackground();
 }
 
@@ -27,11 +29,14 @@ Entity.Player.prototype.update = function() {
       }
     }
 
-    if (this.checkCollision(gemOrange)) {
-      gemOrange.reset();
-      collectedOrangeGem++;
-      renderBackground();
-      GameObject.renderObjects();
+    if (gemOrange !== null) {
+      if (this.checkCollision(gemOrange)) {
+        gemOrange.destroy();
+        gemOrange = null;
+        collectedOrangeGem++;
+        renderBackground();
+        GameObject.renderObjects();
+      }
     }
 };
 
