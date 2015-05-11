@@ -6,8 +6,6 @@ window.GameObject = window.GameObject || {};
   var intGenerator = Utils.intGenerator;
   var renderImg = Utils.renderImg;
 
-  // Create separate canvas for players to make players animate more reponsively to the key stroke.
-  // Rendering on this canvas will be triggered by key press event.
   var objectsCanvas = new Utils.Canvas('object-canvas', 505, 606);
   document.body.appendChild(objectsCanvas.canvas);
   var ctx = objectsCanvas.ctx;
@@ -23,8 +21,6 @@ window.GameObject = window.GameObject || {};
     }
     return false;
   };
-
-  window.checkObjectCollision = checkObjectCollision;
 
   var Objects = function() {
     this.width = 100; // for objects, width does not really matter, but what column it is in does
@@ -103,21 +99,6 @@ window.GameObject = window.GameObject || {};
 
   window.GameObject.renderObjects = function() {
     ctx.clearRect(0, 0, 505, 606);
-    // TODO: use listObject
-    /*if (rocks !== []) {
-      for (var i = 0; i < rocks.length; i++) {
-        rocks[i].render();
-      }
-    }
-    if (levelKey !== null) {
-      levelKey.render();
-    }
-    if (gemOrange !== null) {
-      gemOrange.render();
-    }
-    if (gemBlue !== null) {
-      gemBlue.render();
-    }*/
     listObjects.forEach(function(gameObject) {
       gameObject.render();
     });

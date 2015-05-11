@@ -99,7 +99,7 @@ window.Entity = window.Entity || {};
       }
       if (temp.x >= 0 && temp.x <= 404 && temp.y >= -13 && temp.y <= 404) {
           for (var i = 0; i < rocks.length; i++) {
-            if (this.checkCollision(rocks[i], temp)) {
+            if (Utils.checkCollision(rocks[i], temp)) {
               return;
             }
           }

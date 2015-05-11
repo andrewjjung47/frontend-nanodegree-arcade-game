@@ -36,17 +36,17 @@ window.Utils.renderImg = function() {
 };
 
 /**
-   * Check whether an object has collided with another object. The object must have
-   * properties row, left and width.
-   * @return {boolean} true when collision has occured
-   */
-  window.Utils.checkCollision = function(obj1, obj2) {
-    // check if the two objects are in the same row
-    if (obj1.row === obj2.row) {
-      // check if they overlaps
-      if (obj1.left + obj1.width > obj2.left && obj1.left < obj2.left + obj2.width) {
-        return true;
-      }
+ * Check whether an object has collided with another object. The object must have
+ * properties row, left and width.
+ * @return {boolean} true when collision has occured
+ */
+window.Utils.checkCollision = function(obj1, obj2) {
+  // check if the two objects are in the same row
+  if (obj1.row === obj2.row) {
+    // check if they overlaps
+    if (obj1.left + obj1.width > obj2.left && obj1.left < obj2.left + obj2.width) {
+      return true;
     }
-    return false;
-  };
+  }
+  return false;
+};
