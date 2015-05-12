@@ -82,35 +82,6 @@ window.Entity = window.Entity || {};
       playerCanvas.ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   };
 
-  /* Check if the new movement command would bring the player
-  outside the canvas or collide with rocks, and if it doesn't move the player */
-  Player.prototype.move = function(direction, displacement) {
-      var temp = {width: this.width};
-      if (direction === 'x') {
-          temp.x = this.x + displacement;
-          temp.left = temp.x + 18;
-          temp.row = this.row;
-          temp.y = this.y;
-      }
-      else if (direction === 'y') {
-          temp.y = this.y + displacement;
-          temp.row = (temp.y + 13)/83;
-          temp.left = this.left;
-          temp.x = this.x;
-      }
-      if (temp.x >= 0 && temp.x <= 404 && temp.y >= -13 && temp.y <= 404) {
-          for (var i = 0; i < rocks.length; i++) {
-            if (Utils.checkCollision(rocks[i], temp)) {
-              return;
-            }
-          }
-          this.x = temp.x;
-          this.y = temp.y;
-          this.left = temp.left;
-          this.row = temp.row;
-      }
-  };
-
   Player.prototype.handleInput = function(key) {
       switch (key) {
           case 'left':
