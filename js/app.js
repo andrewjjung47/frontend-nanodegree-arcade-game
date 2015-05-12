@@ -46,6 +46,8 @@ Entity.Player.prototype.update = function() {
         renderBackground();
       }
     }
+
+    this.render();
 };
 
 /* Check if the new movement command would bring the player
@@ -106,7 +108,6 @@ Entity.Player.prototype.handleInput = function(key, _this) {
           this.move('y', 83);
           break;
     }
-    _this.render(); // makes moves more responsive.
     if (_this.checkCollision(levelKey)) {
       _this.reset();
       updateLevel();
