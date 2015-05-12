@@ -24,7 +24,9 @@ window.GameObject = window.GameObject || {};
 
   var Objects = function() {
     this.width = 100; // for objects, width does not really matter, but what column it is in does
-    this.reset();
+    do {
+      this.reset();
+    } while(checkObjectCollision(this));
     listObjects.push(this);
     GameObject.renderObjects();
   };
@@ -34,13 +36,10 @@ window.GameObject = window.GameObject || {};
   };
 
   Objects.prototype.reset = function() {
-    do {
-      this.x = intGenerator(0, 4) * 101;
-      this.left = this.x; // left margin does not really matter for objects
-      this.row = intGenerator(0, 4);
-      this.y = this.row * 83 - this.top; // this.top is the top margin
-    } while (checkObjectCollision(this));
-    GameObject.renderObjects();
+    this.x = intGenerator(0, 4) * 101;
+    this.left = this.x; // left margin does not really matter for objects
+    this.row = intGenerator(0, 4);
+    this.y = this.row * 83 - this.top; // this.top is the top margin
   };
 
   var Rock = function() {
@@ -64,12 +63,9 @@ window.GameObject = window.GameObject || {};
   Key.prototype = Object.create(Objects.prototype);
 
   Key.prototype.reset = function() {
-    do {
-      // Key has fixed row and y property
-      this.x = 101 * intGenerator(0, 4);
-      this.left = this.x;
-    } while (checkObjectCollision(this));
-    GameObject.renderObjects();
+    // Key has fixed row and y property
+    this.x = 101 * intGenerator(0, 4);
+    this.left = this.x;
   };
 
   var GemOrange = function() {

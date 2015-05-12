@@ -70,7 +70,8 @@ window.Entity = window.Entity || {};
           if (_this.checkCollision(levelKey)) {
             _this.reset();
             updateLevel();
-            levelKey.reset();
+            levelKey = GameObject.destroyObject(levelKey);
+            levelKey = new GameObject.Key();
           }
         }
       });
