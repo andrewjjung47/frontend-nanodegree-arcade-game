@@ -56,47 +56,16 @@ window.Entity = window.Entity || {};
 
       var _this = this;
 
-      document.addEventListener('keyup', function(e) {
-        var allowedKeys = {
-            37: 'left',
-            38: 'up',
-            39: 'right',
-            40: 'down'
-        };
-
-        if (!pause) {
-          _this.handleInput(allowedKeys[e.keyCode]);
-          _this.render(); // makes moves more responsive.
-          if (_this.checkCollision(levelKey)) {
-            _this.reset();
-            updateLevel();
-            levelKey = GameObject.destroyObject(levelKey);
-            levelKey = new GameObject.Key();
-          }
-        }
-      });
+      if(_this.handleInput) {
+        document.addEventListener('keyup', function(e) {
+          _this.handleInput(e, _this);
+        });
+      }
   };
 
   Player.prototype.render = function() {
       playerCanvas.ctx.clearRect(0, 0, 505, 606);
       playerCanvas.ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-  };
-
-  Player.prototype.handleInput = function(key) {
-      switch (key) {
-          case 'left':
-              this.move('x', -101);
-              break;
-          case 'up':
-              this.move('y', -83);
-              break;
-          case 'right':
-              this.move('x', 101);
-              break;
-          case 'down':
-              this.move('y', 83);
-              break;
-      }
   };
 
   /**

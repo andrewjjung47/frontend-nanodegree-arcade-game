@@ -82,6 +82,40 @@ Entity.Player.prototype.move = function(direction, displacement) {
     }
 };
 
+Entity.Player.prototype.handleInput = function(key, _this) {
+  var allowedKeys = {
+          37: 'left',
+          38: 'up',
+          39: 'right',
+          40: 'down'
+        };
+
+  if (!pause) {
+    key = allowedKeys[key.keyCode];
+    switch (key) {
+      case 'left':
+          this.move('x', -101);
+          break;
+      case 'up':
+          this.move('y', -83);
+          break;
+      case 'right':
+          this.move('x', 101);
+          break;
+      case 'down':
+          this.move('y', 83);
+          break;
+    }
+    _this.render(); // makes moves more responsive.
+    if (_this.checkCollision(levelKey)) {
+      _this.reset();
+      updateLevel();
+      levelKey = GameObject.destroyObject(levelKey);
+      levelKey = new GameObject.Key();
+    }
+  }
+};
+
 /**
  * Render background on a separate canvas to avoid repeatedly redrawing it
  */
