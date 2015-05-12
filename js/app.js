@@ -10,6 +10,9 @@ function updateLevel() {
     GameObject.destroyObject(gemOrange);
   }
   gemOrange = new GameObject.GemOrange();
+
+  listBlocks = [];
+
   renderBackground();
 }
 
@@ -44,6 +47,11 @@ Entity.Player.prototype.update = function() {
       if (this.checkCollision(gemBlue)) {
         gemBlue = GameObject.destroyObject(gemBlue);
         gemBlue = new GameObject.GemBlue();
+        var blockColumn;
+        do {
+          blockColumn = Utils.intGenerator(0, 4);
+        } while(listBlocks.indexOf(blockColumn) !== -1);
+        listBlocks.push(blockColumn);
         renderBackground();
       }
     }
@@ -149,17 +157,26 @@ function renderBackground() {
      */
     for (row = 0; row < numRows; row++) {
         for (col = 0; col < numCols; col++) {
-            /* The drawImage function of the canvas' context element
-             * requires 3 parameters: the image to draw, the x coordinate
-             * to start drawing and the y coordinate to start drawing.
-             * We're using our Resources helpers to refer to our images
-             * so that we get the benefits of caching these images, since
-             * we're using them over and over.
-             */
-            ctx.drawImage(Resources.get(rowImages[row]),
-                                           col * 101 + 101, row * 83);
+          /* The drawImage function of the canvas' context element
+           * requires 3 parameters: the image to draw, the x coordinate
+           * to start drawing and the y coordinate to start drawing.
+           * We're using our Resources helpers to refer to our images
+           * so that we get the benefits of caching these images, since
+           * we're using them over and over.
+           */
+          ctx.drawImage(Resources.get(rowImages[row]),
+                                         col * 101 + 101, row * 83);
+
+          if (row === 0) {
+            for(var i = 0; i < listBlocks.length; i++) {
+              ctx.drawImage(Resources.get('images/stone-block.png'),
+              listBlocks[i] * 101 + 101, 0);
+            }
+          }
         }
     }
+
+
 
     ctx.fillStyle = 'black';
     ctx.font = '17px Courier New';
@@ -175,6 +192,9 @@ function renderBackground() {
     ctx.drawImage(Resources.get('images/Star.png'), 5, 185, 40, 68);
     ctx.fillText(':' + a.toFixed(1), 52, 230);
 }
+
+// Column numbers of stone-blocks where the player can walk on
+var listBlocks = [];
 
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
