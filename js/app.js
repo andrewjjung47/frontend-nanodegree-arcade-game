@@ -10,8 +10,11 @@ function updateLevel() {
     GameObject.destroyObject(gemOrange);
   }
   gemOrange = new GameObject.GemOrange();
-
-  listBlocks = [];
+  if (gemBlue !== null) {
+    GameObject.destroyObject(gemBlue);
+  }
+  gemBlue = new GameObject.GemBlue();
+  listBlocks = [0, 1, 2, 3, 4];
 
   renderBackground();
 }
@@ -46,13 +49,15 @@ Entity.Player.prototype.update = function() {
     if (gemBlue !== null) {
       if (this.checkCollision(gemBlue)) {
         gemBlue = GameObject.destroyObject(gemBlue);
-        gemBlue = new GameObject.GemBlue();
-        var blockColumn;
-        do {
-          blockColumn = Utils.intGenerator(0, 4);
-        } while(listBlocks.indexOf(blockColumn) !== -1);
-        listBlocks.push(blockColumn);
-        renderBackground();
+
+        if(listBlocks !== []) {
+          var randIndex = Utils.intGenerator(0, listBlocks.length - 1);
+          listBlocks.splice(randIndex, 1);
+          renderBackground();
+          if(listBlocks.length > 0) {
+            gemBlue = new GameObject.GemBlue();
+          }
+        }
       }
     }
 
@@ -134,7 +139,7 @@ document.body.appendChild(backgroundCanvas.canvas);
 function renderBackground() {
   var ctx = backgroundCanvas.ctx;
 
-  ctx.clearRect(0, 0, 505, 606);
+  ctx.clearRect(0, 0, 606, 606);
 
   /* This array holds the relative URL to the image used
    * for that particular row of the game level.
@@ -167,16 +172,14 @@ function renderBackground() {
           ctx.drawImage(Resources.get(rowImages[row]),
                                          col * 101 + 101, row * 83);
 
-          if (row === 0) {
-            for(var i = 0; i < listBlocks.length; i++) {
+          if(row === 0) {
+            if(listBlocks.indexOf(col) === -1) {
               ctx.drawImage(Resources.get('images/stone-block.png'),
-              listBlocks[i] * 101 + 101, 0);
+                col * 101 + 101, 0);
             }
           }
         }
     }
-
-
 
     ctx.fillStyle = 'black';
     ctx.font = '17px Courier New';
@@ -194,7 +197,7 @@ function renderBackground() {
 }
 
 // Column numbers of stone-blocks where the player can walk on
-var listBlocks = [];
+var listBlocks = [0, 1, 2, 3, 4];
 
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
