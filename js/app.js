@@ -43,6 +43,7 @@ Entity.Player.prototype.update = function() {
     if (gemBlue !== null) {
       if (this.checkCollision(gemBlue)) {
         gemBlue = GameObject.destroyObject(gemBlue);
+        gemBlue = new GameObject.GemBlue();
         renderBackground();
       }
     }

@@ -38,7 +38,7 @@ window.GameObject = window.GameObject || {};
   Objects.prototype.reset = function() {
     this.x = intGenerator(0, 4) * 101;
     this.left = this.x; // left margin does not really matter for objects
-    this.row = intGenerator(0, 4);
+    this.row = intGenerator(1, 4);
     this.y = this.row * 83 - this.top; // this.top is the top margin
   };
 
