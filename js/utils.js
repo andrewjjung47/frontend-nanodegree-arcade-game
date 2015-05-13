@@ -50,3 +50,11 @@ window.Utils.checkCollision = function(obj1, obj2) {
   }
   return false;
 };
+
+window.Utils.timeCountStart = function() {
+  var startTime = Date.now();
+  return function() {
+    var dt = Date.now() - startTime;
+    return (5000 - dt) / 1000;
+  };
+};

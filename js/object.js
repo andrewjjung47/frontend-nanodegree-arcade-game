@@ -95,11 +95,21 @@ window.GameObject = window.GameObject || {};
 
   Heart.prototype = Object.create(Objects.prototype);
 
+  var Star = function() {
+    this.base = Objects;
+    this.sprite = 'images/Star.png';
+    this.top = 20;
+    this.base();
+  };
+
+  Star.prototype = Object.create(Objects.prototype);
+
   window.GameObject.Rock = Rock;
   window.GameObject.Key = Key;
   window.GameObject.GemOrange = GemOrange;
   window.GameObject.GemBlue = GemBlue;
   window.GameObject.Heart = Heart;
+  window.GameObject.Star = Star;
 
 
   window.GameObject.renderObjects = function() {

@@ -21,6 +21,18 @@ function updateLevel() {
 
 var collectedOrangeGem = 0;
 
+var starTimer = null;
+var starCounter = function() {
+  var timeElapsed = starTimer && starTimer();
+  if (timeElapsed <= 0) {
+    starTimer = null;
+    return 0;
+  }
+  else {
+    return timeElapsed;
+  }
+};
+
 /**
  * Check collision with any collidable object defined in the game.
  * Take appropriate action in case of a collision.
@@ -37,52 +49,9 @@ Entity.Player.prototype.update = function() {
         break;
       }
     }
-
-    if (this.row === 0 && listBlocks.indexOf(this.col) !== -1) {
-      this.life--;
+    if (starTimer) {
       renderBackground();
-      this.reset();
     }
-
-    if (heart !== null) {
-      if (this.checkCollision(heart)) {
-        heart = GameObject.destroyObject(heart);
-        this.life++;
-        renderBackground();
-      }
-    }
-
-    if (gemOrange !== null) {
-      if (this.checkCollision(gemOrange)) {
-        gemOrange = GameObject.destroyObject(gemOrange);
-        collectedOrangeGem++;
-        renderBackground();
-      }
-    }
-
-    if (gemBlue !== null) {
-      if (this.checkCollision(gemBlue)) {
-        gemBlue = GameObject.destroyObject(gemBlue);
-
-        if(listBlocks !== []) {
-          var randIndex = Utils.intGenerator(0, listBlocks.length - 1);
-          listBlocks.splice(randIndex, 1);
-          renderBackground();
-          if(listBlocks.length > 0) {
-            gemBlue = new GameObject.GemBlue();
-          }
-        }
-      }
-    }
-
-    if (this.checkCollision(levelKey)) {
-      this.reset();
-      updateLevel();
-      levelKey = GameObject.destroyObject(levelKey);
-      levelKey = new GameObject.Key();
-    }
-
-    this.render();
 };
 
 /* Check if the new movement command would bring the player
@@ -142,7 +111,59 @@ Entity.Player.prototype.handleInput = function(key, _this) {
           this.move('y', 1);
           break;
     }
-    _this.update();
+
+    if (this.row === 0 && listBlocks.indexOf(this.col) !== -1) {
+      this.life--;
+      renderBackground();
+      this.reset();
+    }
+
+    if (heart !== null) {
+      if (this.checkCollision(heart)) {
+        heart = GameObject.destroyObject(heart);
+        this.life++;
+        renderBackground();
+      }
+    }
+
+    if (star !== null) {
+      if (this.checkCollision(star)) {
+        star = GameObject.destroyObject(star);
+        starTimer = Utils.timeCountStart();
+      }
+    }
+
+    if (gemOrange !== null) {
+      if (this.checkCollision(gemOrange)) {
+        gemOrange = GameObject.destroyObject(gemOrange);
+        collectedOrangeGem++;
+        renderBackground();
+      }
+    }
+
+    if (gemBlue !== null) {
+      if (this.checkCollision(gemBlue)) {
+        gemBlue = GameObject.destroyObject(gemBlue);
+
+        if(listBlocks !== []) {
+          var randIndex = Utils.intGenerator(0, listBlocks.length - 1);
+          listBlocks.splice(randIndex, 1);
+          renderBackground();
+          if(listBlocks.length > 0) {
+            gemBlue = new GameObject.GemBlue();
+          }
+        }
+      }
+    }
+
+    if (this.checkCollision(levelKey)) {
+      this.reset();
+      updateLevel();
+      levelKey = GameObject.destroyObject(levelKey);
+      levelKey = new GameObject.Key();
+    }
+
+    this.render();
   }
 };
 
@@ -206,7 +227,7 @@ function renderBackground() {
     ctx.drawImage(Resources.get('images/Gem Orange.png'), 5, 135, 40, 68);
     ctx.fillText(':' + collectedOrangeGem, 52, 181);
 
-    var a = 5;
+    var a = starCounter();
     ctx.drawImage(Resources.get('images/Star.png'), 5, 185, 40, 68);
     ctx.fillText(':' + a.toFixed(1), 52, 230);
 }
@@ -226,5 +247,6 @@ var levelKey = null;
 var gemOrange = null;
 var gemBlue = null;
 var heart = null;
+var star = null;
 
 

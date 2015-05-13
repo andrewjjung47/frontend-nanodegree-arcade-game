@@ -83,6 +83,7 @@ var Engine = (function(global) {
       gemOrange = new GameObject.GemOrange();
       gemBlue = new GameObject.GemBlue();
       heart = new GameObject.Heart();
+      star = new GameObject.Star();
       GameObject.renderObjects();
     }
 
@@ -97,6 +98,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
+        player.update();
     }
 
     /* This is called by the update function  and loops through all of the
@@ -110,14 +112,6 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        for (var i = 0; i < allEnemies.length; i++) {
-          if (player.checkCollision(allEnemies[i])) {
-            player.reset();
-            player.life--;
-            renderBackground();
-            break;
-          }
-        }
     }
 
     /* This function initially draws the "game level", it will then call
