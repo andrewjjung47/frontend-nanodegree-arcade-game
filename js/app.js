@@ -35,6 +35,10 @@ Entity.Player.prototype.update = function() {
       }
     }
 
+    if (this.row === 0 && listBlocks.indexOf(this.col) !== -1) {
+      this.reset();
+    }
+
     if (gemOrange !== null) {
       if (this.checkCollision(gemOrange)) {
         gemOrange = GameObject.destroyObject(gemOrange);
@@ -126,7 +130,6 @@ Entity.Player.prototype.handleInput = function(key, _this) {
           break;
     }
     _this.update();
-    _this.render();
   }
 };
 
