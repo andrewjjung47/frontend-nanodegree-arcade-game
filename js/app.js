@@ -26,9 +26,6 @@ var collectedOrangeGem = 0;
  * Take appropriate action in case of a collision.
  */
 Entity.Player.prototype.update = function() {
-    this.row = (this.y + 13) / 83;
-    this.left = this.x + 18; // furthest left pixel of the player
-
     for (var i = 0; i < allEnemies.length; i++) {
       if (this.checkCollision(allEnemies[i])) {
         this.reset();
@@ -61,6 +58,13 @@ Entity.Player.prototype.update = function() {
       }
     }
 
+    if (this.checkCollision(levelKey)) {
+      this.reset();
+      updateLevel();
+      levelKey = GameObject.destroyObject(levelKey);
+      levelKey = new GameObject.Key();
+    }
+
     this.render();
 };
 
@@ -69,16 +73,14 @@ outside the canvas or collide with rocks, and if it doesn't move the player */
 Entity.Player.prototype.move = function(direction, displacement) {
     var temp = {width: this.width};
     if (direction === 'x') {
-        temp.x = this.x + displacement;
-        temp.left = temp.x + 18;
-        temp.row = this.row;
-        temp.y = this.y;
+      temp.col = this.col + displacement;
+      temp.row = this.row;
+      this.resetPosition(temp);
     }
     else if (direction === 'y') {
-        temp.y = this.y + displacement;
-        temp.row = (temp.y + 13)/83;
-        temp.left = this.left;
-        temp.x = this.x;
+      temp.row = this.row + displacement;
+      temp.col = this.col;
+      this.resetPosition(temp);
     }
     if (temp.x >= 0 && temp.x <= 404 && temp.y >= -13 && temp.y <= 404) {
         for (var i = 0; i < rocks.length; i++) {
@@ -95,6 +97,7 @@ Entity.Player.prototype.move = function(direction, displacement) {
         this.y = temp.y;
         this.left = temp.left;
         this.row = temp.row;
+        this.col = temp.col;
     }
 };
 
@@ -110,24 +113,20 @@ Entity.Player.prototype.handleInput = function(key, _this) {
     key = allowedKeys[key.keyCode];
     switch (key) {
       case 'left':
-          this.move('x', -101);
+          this.move('x', -1);
           break;
       case 'up':
-          this.move('y', -83);
+          this.move('y', -1);
           break;
       case 'right':
-          this.move('x', 101);
+          this.move('x', 1);
           break;
       case 'down':
-          this.move('y', 83);
+          this.move('y', 1);
           break;
     }
-    if (_this.checkCollision(levelKey)) {
-      _this.reset();
-      updateLevel();
-      levelKey = GameObject.destroyObject(levelKey);
-      levelKey = new GameObject.Key();
-    }
+    _this.update();
+    _this.render();
   }
 };
 

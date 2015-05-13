@@ -109,7 +109,14 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        for (var i = 0; i < allEnemies.length; i++) {
+          if (player.checkCollision(allEnemies[i])) {
+            player.reset();
+            player.life--;
+            renderBackground();
+            break;
+          }
+        }
     }
 
     /* This function initially draws the "game level", it will then call

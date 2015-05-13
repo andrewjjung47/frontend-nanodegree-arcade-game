@@ -49,9 +49,10 @@ window.Entity = window.Entity || {};
       this.sprite = charImage;
       this.life = 4;
       this.width = 65; // 18px blank on each sides of the image
-      this.x = 202;
-      this.y = 402;
-      this.row = (this.y + 13) / 83;
+      this.col = 2;
+      this.row = 5;
+      this.x = this.col * 101;
+      this.y = this.row * 83 - 13;
       this.left = this.x + 18; // furthest left pixel of the player
 
       var _this = this;
@@ -79,9 +80,16 @@ window.Entity = window.Entity || {};
   };
 
   Player.prototype.reset = function() {
-      this.x = 202;
-      this.y = 402;
+      this.col = 2;
+      this.row = 5;
+      this.resetPosition(this);
       this.render();
+  };
+
+  Player.prototype.resetPosition = function(temp) {
+    temp.x = temp.col * 101;
+    temp.y = temp.row * 83 - 13;
+    temp.left = temp.x + 18; // furthest left pixel of the player
   };
 
 
