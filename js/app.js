@@ -26,6 +26,7 @@ var starCounter = function() {
   var timeElapsed = starTimer && starTimer();
   if (timeElapsed <= 0) {
     starTimer = null;
+    if (player) player.render();
     return 0;
   }
   else {
@@ -40,13 +41,18 @@ var starCounter = function() {
 Entity.Player.prototype.update = function() {
     for (var i = 0; i < allEnemies.length; i++) {
       if (this.checkCollision(allEnemies[i])) {
-        this.reset();
-        if (this.life === 0) pause = true;
-        else {
-          this.life--;
-          renderBackground();
+        if (starTimer) {
+          allEnemies[i].reset();
         }
-        break;
+        else {
+          this.reset();
+          if (this.life === 0) pause = true;
+          else {
+            this.life--;
+            renderBackground();
+          }
+          break;
+        }
       }
     }
     if (starTimer) {

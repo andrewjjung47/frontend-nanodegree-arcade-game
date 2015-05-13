@@ -66,6 +66,9 @@ window.Entity = window.Entity || {};
 
   Player.prototype.render = function() {
       playerCanvas.ctx.clearRect(0, 0, 505, 606);
+      if (starTimer) {
+        playerCanvas.ctx.drawImage(Resources.get('images/Selector.png'), this.x, this.y);
+      }
       playerCanvas.ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   };
 
