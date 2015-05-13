@@ -86,11 +86,20 @@ window.GameObject = window.GameObject || {};
 
   GemBlue.prototype = Object.create(Objects.prototype);
 
+  var Heart = function() {
+    this.base = Objects;
+    this.sprite = 'images/Heart.png';
+    this.top = 20;
+    this.base();
+  };
+
+  Heart.prototype = Object.create(Objects.prototype);
 
   window.GameObject.Rock = Rock;
   window.GameObject.Key = Key;
   window.GameObject.GemOrange = GemOrange;
   window.GameObject.GemBlue = GemBlue;
+  window.GameObject.Heart = Heart;
 
 
   window.GameObject.renderObjects = function() {

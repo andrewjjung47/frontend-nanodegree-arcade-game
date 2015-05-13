@@ -29,14 +29,27 @@ Entity.Player.prototype.update = function() {
     for (var i = 0; i < allEnemies.length; i++) {
       if (this.checkCollision(allEnemies[i])) {
         this.reset();
-        this.life--;
-        renderBackground();
+        if (this.life === 0) pause = true;
+        else {
+          this.life--;
+          renderBackground();
+        }
         break;
       }
     }
 
     if (this.row === 0 && listBlocks.indexOf(this.col) !== -1) {
+      this.life--;
+      renderBackground();
       this.reset();
+    }
+
+    if (heart !== null) {
+      if (this.checkCollision(heart)) {
+        heart = GameObject.destroyObject(heart);
+        this.life++;
+        renderBackground();
+      }
     }
 
     if (gemOrange !== null) {
@@ -212,5 +225,6 @@ var rocks = [];
 var levelKey = null;
 var gemOrange = null;
 var gemBlue = null;
+var heart = null;
 
 

@@ -82,6 +82,7 @@ var Engine = (function(global) {
       levelKey = new GameObject.Key();
       gemOrange = new GameObject.GemOrange();
       gemBlue = new GameObject.GemBlue();
+      heart = new GameObject.Heart();
       GameObject.renderObjects();
     }
 
