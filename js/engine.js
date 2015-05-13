@@ -54,6 +54,23 @@ var Engine = (function(global) {
          * our update function since it may be used for smooth animation.
          */
           update(dt);
+
+          if (!heart && Math.random() < 0.001) {
+            heart = new GameObject.Heart();
+          }
+
+          if (!star && Math.random() < 0.001) {
+            star = new GameObject.Star();
+          }
+
+          if (!gemOrange && Math.random() < 0.002) {
+            gemOrange = new GameObject.GemOrange();
+          }
+
+          if (rocks.length < 5 && Math.random() < 0.003) {
+            rocks.push(new GameObject.Rock());
+          }
+
           render();
         }
 
@@ -78,12 +95,8 @@ var Engine = (function(global) {
       renderBackground();
       main();
       charSelect();
-      rocks.push(new GameObject.Rock());
       levelKey = new GameObject.Key();
-      gemOrange = new GameObject.GemOrange();
       gemBlue = new GameObject.GemBlue();
-      heart = new GameObject.Heart();
-      star = new GameObject.Star();
       GameObject.renderObjects();
     }
 
