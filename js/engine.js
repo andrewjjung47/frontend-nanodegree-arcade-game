@@ -36,6 +36,10 @@ var Engine = (function(global) {
     var mainCanvas = new Utils.Canvas('main', 505, 606);
     doc.body.appendChild(mainCanvas.canvas);
 
+    // Game option canvas on top of the main canvas
+    var gameOptionCanvas = new Utils.Canvas('game-option', 505, 606);
+    doc.body.appendChild(gameOptionCanvas.canvas);
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -112,6 +116,10 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         player.update();
+        if (player.life === 0) {
+          pause = true;
+          gameOver();
+        }
     }
 
     /* This is called by the update function  and loops through all of the
@@ -156,9 +164,7 @@ var Engine = (function(global) {
      * Execute character selection by setting up selection canvas and add logic
      */
     function charSelect() {
-      // Character selection canvas on top of the main canvas
-      var charCanvas = new Utils.Canvas('char-select', 505, 606);
-      doc.body.appendChild(charCanvas.canvas);
+
 
       // Character index
       var character = 0;
@@ -200,7 +206,7 @@ var Engine = (function(global) {
           }
           else if (input === 'enter') {
             document.removeEventListener('keyup', keyHandler);
-            document.getElementById('char-select').remove();
+            gameOptionCanvas.ctx.clearRect(0, 0, 505, 606);
             player = new Entity.Player(charImages[character]);
             // Enemy number changes according to level
             for (var i = 0; i < 2 + level / 2; i++)
@@ -209,12 +215,7 @@ var Engine = (function(global) {
             }
             pause = false;
             // for test purpose
-            document.addEventListener('keyup', function(e) {
-              if (e.keyCode === 13) {
-                pause = !pause;
-                console.log(pause);
-              }
-            });
+            document.addEventListener('keyup', pauseHandler);
 
             player.render();
             renderBackground();
@@ -229,7 +230,7 @@ var Engine = (function(global) {
       * Render character selection canvas.
       */
       function renderChar() {
-        var ctx = charCanvas.ctx;
+        var ctx = gameOptionCanvas.ctx;
 
         // clear previous drawings on the selection canvas
         ctx.clearRect(0, 0, 505, 606);
@@ -273,12 +274,66 @@ var Engine = (function(global) {
       }
     }
 
+    function gameOver() {
+      var ctx = gameOptionCanvas.ctx;
+      ctx.clearRect(0, 0, 505, 606);
+
+      // white opaque background
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.fillRect(0, 0, 505, 606);
+
+      ctx.fillStyle = 'red';
+      ctx.font = '70px Courier New';
+      ctx.textAlign = 'center';
+      ctx.fillText('Game over', 250, 240);
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = 'black';
+      ctx.font = '20px Courier New';
+      ctx.fillText('Click enter to restart', 15, 350);
+
+      document.removeEventListener('keyup', pauseHandler);
+      document.addEventListener('keyup', resetHandler);
+    }
+
+    function pauseHandler(e) {
+      if (e.keyCode === 13) {
+        var ctx = gameOptionCanvas.ctx;
+        pause = !pause;
+        if (pause) {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+          ctx.fillRect(0, 0, 505, 606);
+        }
+        else {
+          ctx.clearRect(0, 0, 505, 606);
+        }
+      }
+    }
+
+    function resetHandler(e) {
+      if (e.keyCode === 13) {
+        document.removeEventListener('keyup', resetHandler);
+        init();
+      }
+    }
+
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+      listBlocks = [0, 1, 2, 3, 4];
+      allEnemies = [];
+      player = null;
+      rocks = [];
+      levelKey = null;
+      gemOrange = null;
+      gemBlue = null;
+      heart = null;
+      star = null;
+      level = 1;
+      GameObject.destroyAllObject();
+      collectedOrangeGem = 0;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -310,6 +365,7 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = mainCanvas.ctx;
+    global.gameOver = gameOver;
 })(this);
 
 

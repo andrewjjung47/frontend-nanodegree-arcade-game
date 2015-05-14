@@ -125,5 +125,8 @@ window.GameObject = window.GameObject || {};
     GameObject.renderObjects();
     return null;
   };
-
+  window.GameObject.destroyAllObject = function() {
+    listObjects = [];
+    GameObject.renderObjects();
+  };
 }) ();

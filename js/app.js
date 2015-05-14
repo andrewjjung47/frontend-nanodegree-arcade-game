@@ -46,11 +46,8 @@ Entity.Player.prototype.update = function() {
         }
         else {
           this.reset();
-          if (this.life === 0) pause = true;
-          else {
-            this.life--;
-            renderBackground();
-          }
+          this.life--;
+          renderBackground();
           break;
         }
       }
@@ -239,20 +236,17 @@ function renderBackground() {
 }
 
 // Column numbers of stone-blocks where the player can walk on
-var listBlocks = [0, 1, 2, 3, 4];
+var listBlocks,
 
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [];
-
-// Do not initialize player object before character selection
-var player = null;
-
-var rocks = [];
-var levelKey = null;
-var gemOrange = null;
-var gemBlue = null;
-var heart = null;
-var star = null;
+    allEnemies,
+    player,
+    rocks,
+    levelKey,
+    gemOrange,
+    gemBlue,
+    heart,
+    star;
 
 
