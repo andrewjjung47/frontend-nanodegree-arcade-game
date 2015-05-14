@@ -1,39 +1,3 @@
-var level = 1;
-function updateLevel() {
-  level++;
-  var numEnemies = 2 + Math.floor(level / 2);
-  if (allEnemies.length < numEnemies) {
-    allEnemies.push(new Entity.Enemy());
-  }
-
-  if (gemOrange !== null) {
-    GameObject.destroyObject(gemOrange);
-  }
-  gemOrange = new GameObject.GemOrange();
-  if (gemBlue !== null) {
-    GameObject.destroyObject(gemBlue);
-  }
-  gemBlue = new GameObject.GemBlue();
-  listBlocks = [0, 1, 2, 3, 4];
-
-  renderBackground();
-}
-
-var collectedOrangeGem = 0;
-
-var starTimer = null;
-var starCounter = function() {
-  var timeElapsed = starTimer && starTimer();
-  if (timeElapsed <= 0) {
-    starTimer = null;
-    if (player) player.render();
-    return 0;
-  }
-  else {
-    return timeElapsed;
-  }
-};
-
 /**
  * Check collision with any collidable object defined in the game.
  * Take appropriate action in case of a collision.
@@ -41,6 +5,7 @@ var starCounter = function() {
 Entity.Player.prototype.update = function() {
     for (var i = 0; i < allEnemies.length; i++) {
       if (this.checkCollision(allEnemies[i])) {
+        // When starTimer is running, the player can reset collided enemy
         if (starTimer) {
           allEnemies[i].reset();
         }
@@ -52,6 +17,7 @@ Entity.Player.prototype.update = function() {
         }
       }
     }
+    // Update the timer on background canvas
     if (starTimer) {
       renderBackground();
     }
@@ -60,34 +26,35 @@ Entity.Player.prototype.update = function() {
 /* Check if the new movement command would bring the player
 outside the canvas or collide with rocks, and if it doesn't move the player */
 Entity.Player.prototype.move = function(direction, displacement) {
-    var temp = {width: this.width};
-    if (direction === 'x') {
-      temp.col = this.col + displacement;
-      temp.row = this.row;
-      this.resetPosition(temp);
-    }
-    else if (direction === 'y') {
-      temp.row = this.row + displacement;
-      temp.col = this.col;
-      this.resetPosition(temp);
-    }
-    if (temp.x >= 0 && temp.x <= 404 && temp.y >= -13 && temp.y <= 404) {
-        for (var i = 0; i < rocks.length; i++) {
-          if (Utils.checkCollision(rocks[i], temp)) {
-            if (collectedOrangeGem) {
-              GameObject.destroyObject(rocks[i]);
-              rocks.splice(i, 1);
-              break;
-            }
-            else return;
-          }
+  // Use temp to check if the movement is within the constraint.
+  var temp = {width: this.width};
+  if (direction === 'x') {
+    temp.col = this.col + displacement;
+    temp.row = this.row;
+    this.resetPosition(temp);
+  }
+  else if (direction === 'y') {
+    temp.row = this.row + displacement;
+    temp.col = this.col;
+    this.resetPosition(temp);
+  }
+  if (temp.x >= 0 && temp.x <= 404 && temp.y >= -13 && temp.y <= 404) {
+    for (var i = 0; i < rocks.length; i++) {
+      if (Utils.checkCollision(rocks[i], temp)) {
+        if (collectedOrangeGem) {
+          GameObject.destroyObject(rocks[i]);
+          rocks.splice(i, 1);
+          break;
         }
-        this.x = temp.x;
-        this.y = temp.y;
-        this.left = temp.left;
-        this.row = temp.row;
-        this.col = temp.col;
+        else return;
+      }
     }
+    this.x = temp.x;
+    this.y = temp.y;
+    this.left = temp.left;
+    this.row = temp.row;
+    this.col = temp.col;
+  }
 };
 
 Entity.Player.prototype.handleInput = function(key, _this) {
@@ -115,6 +82,7 @@ Entity.Player.prototype.handleInput = function(key, _this) {
           break;
     }
 
+    // When the player touches the water
     if (this.row === 0 && listBlocks.indexOf(this.col) !== -1) {
       this.life--;
       renderBackground();
@@ -162,8 +130,6 @@ Entity.Player.prototype.handleInput = function(key, _this) {
     if (this.checkCollision(levelKey)) {
       this.reset();
       updateLevel();
-      levelKey = GameObject.destroyObject(levelKey);
-      levelKey = new GameObject.Key();
     }
 
     this.render();
@@ -211,6 +177,7 @@ function renderBackground() {
           ctx.drawImage(Resources.get(rowImages[row]),
                                          col * 101 + 101, row * 83);
 
+          // Stone-blocks created from blue gem
           if(row === 0) {
             if(listBlocks.indexOf(col) === -1) {
               ctx.drawImage(Resources.get('images/stone-block.png'),
@@ -235,6 +202,40 @@ function renderBackground() {
     ctx.fillText(':' + a.toFixed(1), 52, 230);
 }
 
+function updateLevel() {
+  level++;
+
+  // Enemy number changes according to level
+  var numEnemies = 2 + Math.floor(level / 2);
+  while (allEnemies.length < numEnemies) {
+    allEnemies.push(new Entity.Enemy());
+  }
+
+  if (gemBlue !== null) {
+    GameObject.destroyObject(gemBlue);
+  }
+  gemBlue = new GameObject.GemBlue();
+  listBlocks = [0, 1, 2, 3, 4];
+
+  if (levelKey) levelKey = GameObject.destroyObject(levelKey);
+  levelKey = new GameObject.Key();
+
+  renderBackground();
+}
+
+var starTimer = null;
+var starCounter = function() {
+  var timeElapsed = starTimer && starTimer();
+  if (timeElapsed <= 0) {
+    starTimer = null;
+    if (player) player.render();
+    return 0;
+  }
+  else {
+    return timeElapsed;
+  }
+};
+
 // Column numbers of stone-blocks where the player can walk on
 var listBlocks,
 
@@ -247,6 +248,8 @@ var listBlocks,
     gemOrange,
     gemBlue,
     heart,
-    star;
+    star,
+    collectedOrangeGem,
+    level;
 
 

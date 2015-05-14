@@ -89,6 +89,7 @@ window.Entity = window.Entity || {};
       this.render();
   };
 
+  // Updates x, y, and left properties according to the updated col and row
   Player.prototype.resetPosition = function(temp) {
     temp.x = temp.col * 101;
     temp.y = temp.row * 83 - 13;

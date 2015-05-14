@@ -59,6 +59,7 @@ var Engine = (function(global) {
          */
           update(dt);
 
+          // Randomly generate objects.
           if (!heart && Math.random() < 0.001) {
             heart = new GameObject.Heart();
           }
@@ -67,7 +68,7 @@ var Engine = (function(global) {
             star = new GameObject.Star();
           }
 
-          if (!gemOrange && Math.random() < 0.002) {
+          if (!gemOrange && Math.random() < 0.003) {
             gemOrange = new GameObject.GemOrange();
           }
 
@@ -99,8 +100,6 @@ var Engine = (function(global) {
       renderBackground();
       main();
       charSelect();
-      levelKey = new GameObject.Key();
-      gemBlue = new GameObject.GemBlue();
       GameObject.renderObjects();
     }
 
@@ -208,13 +207,8 @@ var Engine = (function(global) {
             document.removeEventListener('keyup', keyHandler);
             gameOptionCanvas.ctx.clearRect(0, 0, 505, 606);
             player = new Entity.Player(charImages[character]);
-            // Enemy number changes according to level
-            for (var i = 0; i < 2 + level / 2; i++)
-            {
-                allEnemies[i] = new Entity.Enemy();
-            }
+
             pause = false;
-            // for test purpose
             document.addEventListener('keyup', pauseHandler);
 
             player.render();
@@ -264,7 +258,7 @@ var Engine = (function(global) {
         paragvert = 380;
         ctx.fillText('How to play:', 15, paragvert);
         ctx.fillText('  - Use up, down, left, and right keys to move', 15, paragvert + 20);
-        ctx.fillText("    your character. Press 'p' to pause.", 15, paragvert + 40);
+        ctx.fillText("    your character. Press 'enter' to pause.", 15, paragvert + 40);
         ctx.fillText('  - Collision with a bug or touching the water', 15, paragvert + 60);
         ctx.fillText('    will cost you one heart.', 15, paragvert + 80);
         ctx.fillText('  - Move to the next level by obtaining a key.', 15, paragvert + 100);
@@ -322,7 +316,6 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-      listBlocks = [0, 1, 2, 3, 4];
       allEnemies = [];
       player = null;
       rocks = [];
@@ -331,8 +324,9 @@ var Engine = (function(global) {
       gemBlue = null;
       heart = null;
       star = null;
-      level = 1;
       GameObject.destroyAllObject();
+      level = 0;
+      updateLevel();
       collectedOrangeGem = 0;
     }
 

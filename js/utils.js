@@ -51,6 +51,11 @@ window.Utils.checkCollision = function(obj1, obj2) {
   return false;
 };
 
+/**
+ * Create a timer function that returns the amount of time star effect is valid
+ * @return {function} function that returns 5 seconds - time elapsed since
+ *                              this function is created.
+ */
 window.Utils.timeCountStart = function() {
   var startTime = Date.now();
   return function() {
