@@ -1,6 +1,5 @@
-frontend-nanodegree-arcade-game
-===============================
-#Author: Andrew Jongho Jung
+#frontend-nanodegree-arcade-game
+##Author: Andrew Jongho Jung
 
 <img src="./images/screenshot.jpg" alt="Screenshot preview" width="688" height="438">
 
